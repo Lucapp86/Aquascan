@@ -6,8 +6,12 @@ export const PRO_LIBRARY = {
   freestyle: {
     id: 'freestyle',
     name: 'Stile Libero (Crawl)',
-    athlete: 'David Popovici / Michael Phelps',
+    athlete: 'Michael Phelps / David Popovici',
     tempoSPM: '38 - 46 SPM (Medio-Fondo) / 52 - 62 SPM (Sprint)',
+    userVideo: 'assets/sample-swim.webm',
+    proVideo: 'assets/phelps-pro.webm',
+    fallbackUserUrl: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/e/ed/Mary%27s_Swim_Boot_Camp_-_Kari%27s_underwater_freestyle.webm/Mary%27s_Swim_Boot_Camp_-_Kari%27s_underwater_freestyle.webm.480p.vp9.webm',
+    fallbackProUrl: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/9/91/MP_Michael_Phelps_-_Chronos_Competition_Swim_Goggle_footage.webm/MP_Michael_Phelps_-_Chronos_Competition_Swim_Goggle_footage.webm.480p.vp9.webm',
     description: 'Trazione a gomito alto (EVF), rollio controllato di 35°-45° e battuta di gambe propulsiva costante.',
     phases: [
       {
@@ -62,8 +66,7 @@ export const PRO_LIBRARY = {
         consequence: 'Perdita della fase più potente e propulsiva della bracciata.',
         drill: 'Esercizio "Sfioramento coscia con il pollice" a ogni bracciata'
       }
-    ],
-    demoType: 'synthetic-freestyle'
+    ]
   },
 
   backstroke: {
@@ -71,12 +74,16 @@ export const PRO_LIBRARY = {
     name: 'Dorso (Backstroke)',
     athlete: 'Thomas Ceccon / Ryan Murphy',
     tempoSPM: '36 - 44 SPM',
+    userVideo: 'assets/sample-swim.webm',
+    proVideo: 'assets/sample-backstroke.webm',
+    fallbackUserUrl: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/1/1a/Backstroke_Underwater.webm/Backstroke_Underwater.webm.480p.vp9.webm',
+    fallbackProUrl: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/1/1a/Backstroke_Underwater.webm/Backstroke_Underwater.webm.480p.vp9.webm',
     description: 'Asse orizzontale impeccabile, rollio costante di 40°-45° su entrambi i lati, flessione del gomito subacqueo a 90°.',
     phases: [
       {
         name: 'Ingresso della Mano',
         targetAngle: '170° - 180°',
-        keyPoint: 'Migliolo entra per primo a ore 11 (braccio sinistro) o ore 1 (braccio destro). Braccio disteso.',
+        keyPoint: 'Mignolo entra per primo a ore 11 (braccio sinistro) o ore 1 (braccio destro). Braccio disteso.',
         idealParams: { elbowAngle: 175, bodyRoll: 45, headPosition: 'Fissa a guardare il soffitto, mento staccato dallo sterno' }
       },
       {
@@ -109,15 +116,18 @@ export const PRO_LIBRARY = {
         consequence: 'Frenata idrodinamica massiccia causata dalla flessione eccessiva dell\'anca.',
         drill: 'Battuta di gambe sul dorso con tavoletta sulla pancia o braccia lungo i fianchi'
       }
-    ],
-    demoType: 'synthetic-backstroke'
+    ]
   },
 
   breaststroke: {
     id: 'breaststroke',
     name: 'Rana (Breaststroke)',
-    athlete: 'Adam Peaty / Nicolò Martinenghi',
+    athlete: 'Adam Peaty (Record Mondiale)',
     tempoSPM: '32 - 42 SPM',
+    userVideo: 'assets/sample-swim.webm',
+    proVideo: 'assets/peaty-pro.webm',
+    fallbackUserUrl: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/e/ed/Mary%27s_Swim_Boot_Camp_-_Kari%27s_underwater_freestyle.webm/Mary%27s_Swim_Boot_Camp_-_Kari%27s_underwater_freestyle.webm.480p.vp9.webm',
+    fallbackProUrl: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/6/66/Adam_Peaty_wins_100m_Breaststroke_silver_in_Glasgow.webm/Adam_Peaty_wins_100m_Breaststroke_silver_in_Glasgow.webm.480p.vp9.webm',
     description: 'Alternanza esplosiva tra massima trazione a cuore, sollevamento rapido del tronco e scivolamento idrodinamico a freccia.',
     phases: [
       {
@@ -156,15 +166,18 @@ export const PRO_LIBRARY = {
         consequence: 'Aumento enorme della resistenza dell\'acqua e spinta disuguale.',
         drill: 'Gambe a rana sul dorso con ginocchia tenute sommerse'
       }
-    ],
-    demoType: 'synthetic-breaststroke'
+    ]
   },
 
   butterfly: {
     id: 'butterfly',
     name: 'Farfalla / Delfino (Butterfly)',
-    athlete: 'Caeleb Dressel / Léon Marchand',
+    athlete: 'Léon Marchand / Caeleb Dressel',
     tempoSPM: '42 - 54 SPM',
+    userVideo: 'assets/sample-swim.webm',
+    proVideo: 'assets/butterfly-pro.webm',
+    fallbackUserUrl: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/e/ed/Mary%27s_Swim_Boot_Camp_-_Kari%27s_underwater_freestyle.webm/Mary%27s_Swim_Boot_Camp_-_Kari%27s_underwater_freestyle.webm.480p.vp9.webm',
+    fallbackProUrl: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/6/67/Butterfly_stroke_from_underwater.webm/Butterfly_stroke_from_underwater.webm.480p.vp9.webm',
     description: 'Doppia battuta propulsiva per ciclo, onda corporea originata dal petto e recupero a braccia decontratte radente l\'acqua.',
     phases: [
       {
@@ -183,7 +196,7 @@ export const PRO_LIBRARY = {
         name: 'Spinta e Seconda Battuta (Push & 2nd Kick)',
         targetAngle: '150° - 165° (uscita esplosiva)',
         keyPoint: 'Spinta oltre i fianchi con contemporanea seconda battuta di gambe che proietta il corpo in avanti.',
-        idealParams: { elbowAngle: 160, bodyRoll: 0, headPosition: 'Mentone a filo d\'acqua durante la respirazione' }
+        idealParams: { elbowAngle: 160, bodyRoll: 0, headPosition: 'Mento a filo d\'acqua durante la respirazione' }
       },
       {
         name: 'Recupero Circolare Radente',
@@ -203,7 +216,6 @@ export const PRO_LIBRARY = {
         consequence: 'Perdita del momento d\'inerzia tra l\'ingresso e l\'uscita.',
         drill: 'Ondulazioni subacquee con braccia distese in streamline'
       }
-    ],
-    demoType: 'synthetic-butterfly'
+    ]
   }
 };

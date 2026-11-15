@@ -13,10 +13,12 @@
     freestyle: {
       id: 'freestyle',
       name: 'Stile Libero (Crawl)',
-      athlete: 'David Popovici / Michael Phelps',
+      athlete: 'Michael Phelps / David Popovici',
       tempoSPM: '38 - 46 SPM (Medio-Fondo) / 52 - 62 SPM (Sprint)',
-      sampleVideo: 'assets/sample-swim.webm',
-      fallbackUrl: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/e/ed/Mary%27s_Swim_Boot_Camp_-_Kari%27s_underwater_freestyle.webm/Mary%27s_Swim_Boot_Camp_-_Kari%27s_underwater_freestyle.webm.480p.vp9.webm',
+      userVideo: 'assets/sample-swim.webm',
+      proVideo: 'assets/phelps-pro.webm',
+      fallbackUserUrl: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/e/ed/Mary%27s_Swim_Boot_Camp_-_Kari%27s_underwater_freestyle.webm/Mary%27s_Swim_Boot_Camp_-_Kari%27s_underwater_freestyle.webm.480p.vp9.webm',
+      fallbackProUrl: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/9/91/MP_Michael_Phelps_-_Chronos_Competition_Swim_Goggle_footage.webm/MP_Michael_Phelps_-_Chronos_Competition_Swim_Goggle_footage.webm.480p.vp9.webm',
       description: 'Trazione a gomito alto (EVF), rollio controllato di 35°-45° e battuta di gambe propulsiva costante.',
       phases: [
         {
@@ -79,8 +81,10 @@
       name: 'Dorso (Backstroke)',
       athlete: 'Thomas Ceccon / Ryan Murphy',
       tempoSPM: '36 - 44 SPM',
-      sampleVideo: 'assets/sample-backstroke.webm',
-      fallbackUrl: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/1/1a/Backstroke_Underwater.webm/Backstroke_Underwater.webm.480p.vp9.webm',
+      userVideo: 'assets/sample-swim.webm',
+      proVideo: 'assets/sample-backstroke.webm',
+      fallbackUserUrl: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/1/1a/Backstroke_Underwater.webm/Backstroke_Underwater.webm.480p.vp9.webm',
+      fallbackProUrl: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/1/1a/Backstroke_Underwater.webm/Backstroke_Underwater.webm.480p.vp9.webm',
       description: 'Asse orizzontale impeccabile, rollio costante di 40°-45° su entrambi i lati, flessione del gomito subacqueo a 90°.',
       phases: [
         {
@@ -125,10 +129,12 @@
     breaststroke: {
       id: 'breaststroke',
       name: 'Rana (Breaststroke)',
-      athlete: 'Adam Peaty / Nicolò Martinenghi',
+      athlete: 'Adam Peaty (Record Mondiale)',
       tempoSPM: '32 - 42 SPM',
-      sampleVideo: 'assets/sample-swim.webm',
-      fallbackUrl: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/e/ed/Mary%27s_Swim_Boot_Camp_-_Kari%27s_underwater_freestyle.webm/Mary%27s_Swim_Boot_Camp_-_Kari%27s_underwater_freestyle.webm.480p.vp9.webm',
+      userVideo: 'assets/sample-swim.webm',
+      proVideo: 'assets/peaty-pro.webm',
+      fallbackUserUrl: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/e/ed/Mary%27s_Swim_Boot_Camp_-_Kari%27s_underwater_freestyle.webm/Mary%27s_Swim_Boot_Camp_-_Kari%27s_underwater_freestyle.webm.480p.vp9.webm',
+      fallbackProUrl: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/6/66/Adam_Peaty_wins_100m_Breaststroke_silver_in_Glasgow.webm/Adam_Peaty_wins_100m_Breaststroke_silver_in_Glasgow.webm.480p.vp9.webm',
       description: 'Alternanza esplosiva tra massima trazione a cuore, sollevamento rapido del tronco e scivolamento idrodinamico a freccia.',
       phases: [
         {
@@ -173,10 +179,12 @@
     butterfly: {
       id: 'butterfly',
       name: 'Farfalla / Delfino (Butterfly)',
-      athlete: 'Caeleb Dressel / Léon Marchand',
+      athlete: 'Léon Marchand / Caeleb Dressel',
       tempoSPM: '42 - 54 SPM',
-      sampleVideo: 'assets/sample-swim.webm',
-      fallbackUrl: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/e/ed/Mary%27s_Swim_Boot_Camp_-_Kari%27s_underwater_freestyle.webm/Mary%27s_Swim_Boot_Camp_-_Kari%27s_underwater_freestyle.webm.480p.vp9.webm',
+      userVideo: 'assets/sample-swim.webm',
+      proVideo: 'assets/butterfly-pro.webm',
+      fallbackUserUrl: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/e/ed/Mary%27s_Swim_Boot_Camp_-_Kari%27s_underwater_freestyle.webm/Mary%27s_Swim_Boot_Camp_-_Kari%27s_underwater_freestyle.webm.480p.vp9.webm',
+      fallbackProUrl: 'https://upload.wikimedia.org/wikipedia/commons/transcoded/6/67/Butterfly_stroke_from_underwater.webm/Butterfly_stroke_from_underwater.webm.480p.vp9.webm',
       description: 'Doppia battuta propulsiva per ciclo, onda corporea originata dal petto e recupero a braccia decontratte radente l\'acqua.',
       phases: [
         {
@@ -1237,40 +1245,46 @@ Fornisci una perizia biomeccanica strutturata esattamente così:
       this.aiCoach = new AiCoachEngine();
     }
 
-    loadDemoVideos() {
+    loadDemoVideos(customProVideo = null) {
       const style = PRO_LIBRARY[this.currentStyle] || PRO_LIBRARY.freestyle;
 
-      // Ensure videos are muted for browser autoplay policies
       this.videoUser.muted = true;
       this.videoPro.muted = true;
 
-      // Assign video source
-      const proSrc = style.sampleVideo || style.fallbackUrl;
-      const userSrc = style.sampleVideo || style.fallbackUrl;
+      // 1. Left Video: Subject / User to analyze
+      if (!this.userUploadedCustomVideo) {
+        const userSrc = style.userVideo || style.fallbackUserUrl;
+        this.videoUser.src = userSrc;
+        this.videoUser.load();
+      }
 
-      // User video
-      this.videoUser.src = userSrc;
-      this.videoUser.load();
-
-      // Pro video
+      // 2. Right Video: Actual World Champion Professional Benchmark!
+      const proSrc = customProVideo || style.proVideo || style.fallbackProUrl;
       this.videoPro.src = proSrc;
       this.videoPro.load();
 
-      // Hide placeholder
-      this.userPlaceholder.classList.add('hidden');
+      // Update right athlete name badge
+      if (this.proAthleteName) {
+        this.proAthleteName.textContent = style.athlete;
+      }
 
-      // Add error handler to fall back to online URL if local file is restricted
+      // Hide placeholder
+      if (this.userPlaceholder) {
+        this.userPlaceholder.classList.add('hidden');
+      }
+
+      // Add fallback handlers
       this.videoUser.onerror = () => {
-        if (this.videoUser.src !== style.fallbackUrl) {
+        if (this.videoUser.src !== style.fallbackUserUrl) {
           console.log('Fallback to remote video for user...');
-          this.videoUser.src = style.fallbackUrl;
+          this.videoUser.src = style.fallbackUserUrl;
           this.videoUser.load();
         }
       };
       this.videoPro.onerror = () => {
-        if (this.videoPro.src !== style.fallbackUrl) {
+        if (this.videoPro.src !== style.fallbackProUrl) {
           console.log('Fallback to remote video for pro...');
-          this.videoPro.src = style.fallbackUrl;
+          this.videoPro.src = style.fallbackProUrl;
           this.videoPro.load();
         }
       };
@@ -1463,20 +1477,39 @@ Fornisci una perizia biomeccanica strutturata esattamente così:
       const selectPro = document.getElementById('selectProPreset');
       selectPro.addEventListener('change', (e) => {
         const val = e.target.value;
-        if (val.startsWith('freestyle')) {
-          this.proAthleteName.textContent = 'David Popovici (EVF)';
+        let targetProVideo = null;
+
+        if (val === 'freestyle-phelps') {
+          this.proAthleteName.textContent = 'Michael Phelps (Stile Libero)';
           this.currentStyle = 'freestyle';
-        } else if (val.startsWith('backstroke')) {
-          this.proAthleteName.textContent = 'Thomas Ceccon (90°)';
+          targetProVideo = 'assets/phelps-pro.webm';
+        } else if (val === 'freestyle-evf') {
+          this.proAthleteName.textContent = 'David Popovici (EVF Gomito Alto)';
+          this.currentStyle = 'freestyle';
+          targetProVideo = 'assets/phelps-pro.webm';
+        } else if (val === 'backstroke-ceccon') {
+          this.proAthleteName.textContent = 'Thomas Ceccon (Dorso 90°)';
           this.currentStyle = 'backstroke';
-        } else if (val.startsWith('breaststroke')) {
-          this.proAthleteName.textContent = 'Adam Peaty (Cuore)';
+          targetProVideo = 'assets/sample-backstroke.webm';
+        } else if (val === 'breaststroke-peaty') {
+          this.proAthleteName.textContent = 'Adam Peaty (Rana Élite)';
           this.currentStyle = 'breaststroke';
-        } else if (val.startsWith('butterfly')) {
-          this.proAthleteName.textContent = 'Léon Marchand (Onda)';
+          targetProVideo = 'assets/peaty-pro.webm';
+        } else if (val === 'butterfly-marchand') {
+          this.proAthleteName.textContent = 'Léon Marchand (Farfalla Subacquea)';
           this.currentStyle = 'butterfly';
+          targetProVideo = 'assets/butterfly-pro.webm';
         }
-        this.loadDemoVideos();
+
+        // Highlight matching top style tab
+        document.querySelectorAll('.style-tab').forEach(t => {
+          const match = t.getAttribute('data-style') === this.currentStyle;
+          t.classList.toggle('bg-cyan-500', match);
+          t.classList.toggle('text-slate-900', match);
+          t.classList.toggle('text-slate-300', !match);
+        });
+
+        this.loadDemoVideos(targetProVideo);
         this.updateCoachPanel();
       });
 
@@ -1634,6 +1667,14 @@ Fornisci una perizia biomeccanica strutturata esattamente così:
       const styleData = PRO_LIBRARY[styleKey] || PRO_LIBRARY.freestyle;
       this.proAthleteName.textContent = styleData.athlete;
       this.targetAngleBadge.textContent = styleData.phases[1].targetAngle;
+
+      const selectPro = document.getElementById('selectProPreset');
+      if (selectPro) {
+        if (styleKey === 'freestyle') selectPro.value = 'freestyle-phelps';
+        else if (styleKey === 'backstroke') selectPro.value = 'backstroke-ceccon';
+        else if (styleKey === 'breaststroke') selectPro.value = 'breaststroke-peaty';
+        else if (styleKey === 'butterfly') selectPro.value = 'butterfly-marchand';
+      }
 
       this.loadDemoVideos();
       this.updateCoachPanel();
