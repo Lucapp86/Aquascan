@@ -1,4 +1,4 @@
-﻿# AquaMetrics Pro - Local Development Server
+# AquaMetrics Pro - Local Development Server
 # Runs natively on Windows PowerShell without requiring Node.js or Python!
 
 $port = 8080
