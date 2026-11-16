@@ -1,14 +1,39 @@
 # 🏊 AquaMetrics Pro - Video-Analisi Biomeccanica Nuoto & AI Coach
 
 > **Web App 100% Gratuita, Serverless & Open Source per l'analisi comparativa della tecnica di nuoto.**  
-> Progettata per atleti, allenatori e appassionati di nuoto: confronta i video registrati con il tuo smartphone con i benchmark dei più grandi nuotatori del mondo e ricevi diagnosi tecniche ed esercizi correttivi.
+> Progettata con architettura **Dual-Engine**: modalità **AquaScan Mobile Express** ultra-rapida per smartphone a bordo vasca e **Studio Lab Desktop** per analisi biomeccanica approfondita su PC/Tablet.
 
 ---
 
-## 🌟 Caratteristiche Principali
+## ⚡ 1. AquaScan Mobile Express (Modalità Smartphone a Bordo Vasca)
 
-- **Dual Player Sincronizzato:**
-  - Riproduzione affiancata (orizzontale o verticale) del tuo video e di quello del professionista.
+Ideata per l'allenatore e l'atleta che si trovano a bordo vasca con lo smartphone in mano e necessitano di un responso tecnico immediato in meno di 10 secondi:
+
+- **1-Tap Capture o Caricamento:** Registra un breve video di 4-8 secondi con la fotocamera posteriore o carica un video dalla galleria del telefono.
+- **Matrice Biomeccanica a 16 Profili:**
+  - **4 Stili:** Stile Libero, Dorso, Rana, Farfalla/Delfino.
+  - **4 Prospettive di Ripresa:** Laterale, Frontale, Posteriore, Subacquea.
+- **Filmstrip Automatizzato:** Estrazione istantanea ad alta velocità di 4 fotogrammi chiave della nuotata (*Ingresso & Estensione, Presa EVF, Trazione/Spinta, Fase Propulsiva Finale*).
+- **Elenco Discrepanze & Errori:**
+  - 🔴 **Difetti Macro:** Errori critici che causano calo propulsivo immediato o alta resistenza idrodinamica (es. gomito caduto, gambata a forbice asimmetrica, testa iperestesa).
+  - 🟡 **Difetti Micro:** Dettagli fini di rifinitura tecnica (orientamento palmo, timing di battuta, rollio asimmetrico).
+- **Prescrizioni Correttive Complete:**
+  - 🏊 **Soluzioni in Vasca:** Drill specifici con serie, ripetizioni, tempi di recupero e attrezzi consigliati (palette, boccaglio frontale, pull buoy, pinnette).
+  - 🏋️ **Soluzioni a Secco:** Esercizi di potenziamento, mobilità scapolo-omerale e core stability a secco con bande elastiche o fitball.
+- **Condivisione Istantanea WhatsApp 📲:** Pulsante dedicato a bordo vasca per generare e inviare con 1 tocco l'intero referto diagnostico strutturato via WhatsApp all'atleta o ai genitori.
+
+---
+
+## 🔬 2. Studio Lab Desktop (Modalità PC / Tablet)
+
+La postazione completa di video-analisi biomeccanica avanzata per sessioni di debriefing in studio:
+
+- **Dual Player Sincronizzato con Campioni Olimpici:**
+  - Confronto affiancato con filmati reali dei campioni:
+    - 🥇 **Stile Libero:** Michael Phelps (Pechino 2008 / Londra 2012)
+    - 🥇 **Dorso:** Thomas Ceccon (Record Mondiale 100m Dorso)
+    - 🥇 **Rana:** Adam Peaty (Campione Olimpico 100m Rana)
+    - 🥇 **Farfalla / Delfino:** Léon Marchand (Pluri-campione Olimpico)
   - **Modalità Ghost X-Ray (Sovrapposizione):** Sovrapponi il video del soggetto al nuotatore pro con slider di trasparenza per cogliere istantaneamente disallineamenti di rollio, altezza della testa e trazione.
   - Controllo velocità al rallentatore: **0.1x, 0.25x, 0.5x, 1.0x**.
   - Avanzamento o riavvolgimento fotogramma per fotogramma (**frame-by-frame step** a 30/60 fps).
@@ -28,7 +53,7 @@
   - Pulsante *Tap to Calculate*: tocca 3 volte sul momento d'ingresso della mano per calcolare automaticamente le bracciate al minuto (Stroke Rate) e la durata del ciclo in secondi.
 
 - **AI Swimming Coach a Doppio Livello:**
-  - **Livello 1 (Offline Biomechanical Engine):** Funziona sempre, 100% offline, senza bisogno di alcuna configurazione. Diagnostica le 5 fasi della nuotata (*Ingresso, Presa, Trazione/Spinta, Recupero, Rollio/Gambe*) e suggerisce 3 esercizi correttivi da svolgere in vasca.
+  - **Livello 1 (Offline Biomechanical Engine):** Funziona sempre, 100% offline, senza bisogno di alcuna configurazione. Diagnostica le 5 fasi della nuotata e suggerisce 3 esercizi correttivi in vasca.
   - **Livello 2 (Vision AI con Google Gemini Multimodal):** Cattura i fotogrammi sincronizzati dell'utente e del pro e li invia a Gemini Flash (tramite la tua API Key gratuita) per generare una perizia biomeccanica completa con pagella tecnica e tabella di allenamento in vasca.
 
 - **Esportazione Istantanea HD:**
