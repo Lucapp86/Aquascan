@@ -39,47 +39,50 @@
 <body class="bg-[#0a0f18] text-slate-100 min-h-screen flex flex-col font-sans antialiased select-none">
 
   <!-- TOP HEADER -->
-  <header class="bg-[#121c2d]/90 backdrop-blur-md border-b border-white/10 sticky top-0 z-40 px-4 py-2.5 flex items-center justify-between gap-3">
-    <!-- Brand & Style Selector -->
-    <div class="flex items-center gap-3">
-      <div class="flex items-center gap-2">
-        <div class="w-9 h-9 rounded-lg bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20 text-white font-black text-lg">
-          🏊
-        </div>
-        <div>
-          <h1 class="text-base font-bold tracking-tight text-white flex items-center gap-1.5 leading-none">
-            AquaMetrics <span class="text-xs uppercase px-1.5 py-0.5 rounded bg-cyan-500/20 text-[#00e5ff] font-mono font-semibold border border-cyan-500/30">PRO</span>
-          </h1>
-          <p class="text-[11px] text-slate-400 font-medium">Video-Analisi Biomeccanica & AI Coach</p>
-        </div>
+  <header class="bg-[#121c2d]/95 backdrop-blur-md border-b border-white/10 sticky top-0 z-40 px-3 sm:px-4 py-2 flex items-center justify-between gap-2 sm:gap-3">
+    
+    <!-- Brand -->
+    <div class="flex items-center gap-2.5 shrink-0">
+      <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20 text-white font-black text-base sm:text-lg">
+        🏊
       </div>
-
-      <!-- Stroke Style Selector -->
-      <div class="hidden sm:flex items-center ml-4 bg-slate-900/80 p-1 rounded-lg border border-white/10">
-        <button id="btnStyleFreestyle" class="style-tab active px-3 py-1 rounded text-xs font-semibold bg-cyan-500 text-slate-900 transition-all" data-style="freestyle">Stile Libero</button>
-        <button id="btnStyleBackstroke" class="style-tab px-3 py-1 rounded text-xs font-semibold text-slate-300 hover:text-white transition-all" data-style="backstroke">Dorso</button>
-        <button id="btnStyleBreaststroke" class="style-tab px-3 py-1 rounded text-xs font-semibold text-slate-300 hover:text-white transition-all" data-style="breaststroke">Rana</button>
-        <button id="btnStyleButterfly" class="style-tab px-3 py-1 rounded text-xs font-semibold text-slate-300 hover:text-white transition-all" data-style="butterfly">Farfalla</button>
+      <div>
+        <h1 class="text-sm sm:text-base font-bold tracking-tight text-white flex items-center gap-1.5 leading-none">
+          AquaMetrics <span class="text-[10px] sm:text-xs uppercase px-1.5 py-0.5 rounded bg-cyan-500/20 text-[#00e5ff] font-mono font-semibold border border-cyan-500/30">PRO</span>
+        </h1>
+        <p class="text-[10px] sm:text-[11px] text-slate-400 font-medium hidden xs:block">Video-Analisi Biomeccanica</p>
       </div>
     </div>
 
-    <!-- Live Sync Status & Top Actions -->
-    <div class="flex items-center gap-2">
-      <!-- Sync Status Pill -->
-      <div id="syncStatusPill" class="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono bg-cyan-950/60 border border-cyan-500/40 text-[#00e5ff]">
+    <!-- Dual Mode Switcher (Mobile Express vs Desktop Studio Lab) -->
+    <div class="flex items-center bg-slate-900/95 p-0.5 sm:p-1 rounded-xl border border-white/10 shadow-inner">
+      <button id="btnModeMobile" class="mode-tab active flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20" title="Modalità ultra-semplice per smartphone a bordo vasca">
+        <i data-lucide="smartphone" class="w-3.5 h-3.5"></i>
+        <span>AquaScan Mobile</span>
+      </button>
+      <button id="btnModeDesktop" class="mode-tab flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition-all" title="Modalità avanzata dual-player con goniometro e sync per PC/Tablet">
+        <i data-lucide="monitor" class="w-3.5 h-3.5"></i>
+        <span class="hidden sm:inline">Studio Lab (PC)</span>
+      </button>
+    </div>
+
+    <!-- Actions (Sync status & Buttons) -->
+    <div class="flex items-center gap-1.5 sm:gap-2">
+      <!-- Sync Status Pill (Visible on Desktop) -->
+      <div id="syncStatusPill" class="hidden xl:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono bg-cyan-950/60 border border-cyan-500/40 text-[#00e5ff]">
         <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-        <span id="syncStatusText">Sincronia Attiva (Δ 0.00s)</span>
+        <span id="syncStatusText">Sincronia Attiva</span>
       </div>
 
-      <!-- Export Comparison Image -->
-      <button id="btnExportSnapshot" title="Esporta istantanea comparativa con angoli" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-white/10 transition-colors shadow-sm">
-        <i data-lucide="camera" class="w-4 h-4 text-cyan-400"></i>
-        <span class="hidden sm:inline">Esporta Snapshot</span>
+      <!-- Export Comparison Image (Desktop) -->
+      <button id="btnExportSnapshot" title="Esporta istantanea comparativa" class="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-white/10 transition-colors shadow-sm">
+        <i data-lucide="camera" class="w-3.5 h-3.5 text-cyan-400"></i>
+        <span class="hidden md:inline">Snapshot</span>
       </button>
 
-      <!-- AI Coach Drawer Trigger -->
-      <button id="btnToggleCoachDrawer" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-slate-950 shadow-md shadow-cyan-500/20 transition-all">
-        <i data-lucide="sparkles" class="w-4 h-4 text-slate-950"></i>
+      <!-- AI Coach Drawer Trigger (Desktop) -->
+      <button id="btnToggleCoachDrawer" class="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-slate-950 shadow-md shadow-cyan-500/20 transition-all">
+        <i data-lucide="sparkles" class="w-3.5 h-3.5 text-slate-950"></i>
         <span>AI Coach</span>
       </button>
 
@@ -87,391 +90,564 @@
       <button id="btnOpenSettings" title="Impostazioni & Chiave API AI" class="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 border border-white/10 transition-colors">
         <i data-lucide="settings" class="w-4 h-4"></i>
       </button>
-      <button id="btnOpenFilmingGuide" title="Guida riprese video nuoto da smartphone" class="p-2 rounded-lg text-slate-400 hover:text-cyan-400 hover:bg-slate-800 border border-white/10 transition-colors">
+      <button id="btnOpenFilmingGuide" title="Guida riprese smartphone" class="p-2 rounded-lg text-slate-400 hover:text-cyan-400 hover:bg-slate-800 border border-white/10 transition-colors">
         <i data-lucide="help-circle" class="w-4 h-4"></i>
       </button>
     </div>
   </header>
 
-  <!-- WORKSPACE & MAIN LAYOUT -->
-  <main class="flex-1 flex flex-col lg:flex-row overflow-hidden relative">
+  <!-- MAIN WORKSPACE CONTAINER -->
+  <main class="flex-1 flex flex-col overflow-hidden relative">
 
-    <!-- LEFT: VIDEO WORKSPACE & CONTROLS -->
-    <section class="flex-1 flex flex-col min-w-0 bg-[#070b13] p-2.5 sm:p-4 overflow-y-auto">
-
-      <!-- TOOLBAR: PLAYBACK & BIOMECHANICAL TOOLS -->
-      <div class="glass-panel rounded-xl p-2 sm:p-2.5 mb-3 flex flex-wrap items-center justify-between gap-2 border border-white/10 shadow-lg">
-        
-        <!-- Group 1: Playback controls -->
-        <div class="flex items-center gap-1 sm:gap-1.5">
-          <!-- Play / Pause -->
-          <button id="btnPlayPause" class="flex items-center justify-center w-10 h-9 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold shadow-md shadow-cyan-500/20 transition-transform active:scale-95" title="Riproduci / Pausa (Spazio)">
-            <i data-lucide="play" id="playIcon" class="w-4 h-4 fill-slate-950"></i>
-          </button>
-
-          <!-- Step Backward / Forward 1 frame -->
-          <button id="btnPrevFrame" class="p-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 border border-white/10 transition-colors" title="Fotogramma precedente (-1 frame)">
-            <i data-lucide="skip-back" class="w-4 h-4"></i>
-          </button>
-          <button id="btnNextFrame" class="p-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 border border-white/10 transition-colors" title="Fotogramma successivo (+1 frame)">
-            <i data-lucide="skip-forward" class="w-4 h-4"></i>
-          </button>
-
-          <!-- Speed Selector -->
-          <div class="flex items-center bg-slate-900/90 rounded-lg p-0.5 border border-white/10 text-xs font-mono ml-1">
-            <button class="speed-btn px-2 py-1 rounded text-slate-400 hover:text-white" data-speed="0.1">0.1x</button>
-            <button class="speed-btn px-2 py-1 rounded text-slate-400 hover:text-white" data-speed="0.25">0.25x</button>
-            <button class="speed-btn active px-2 py-1 rounded bg-cyan-500/20 text-[#00e5ff] font-bold" data-speed="0.5">0.5x</button>
-            <button class="speed-btn px-2 py-1 rounded text-slate-400 hover:text-white" data-speed="1.0">1.0x</button>
-          </div>
-
-          <!-- A-B Cycle Loop Toggle -->
-          <button id="btnToggleLoop" class="btn-tool flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 border border-white/10 transition-colors" title="Ripeti ciclo bracciata in loop">
-            <i data-lucide="repeat" class="w-3.5 h-3.5"></i>
-            <span class="hidden sm:inline">Loop Ciclo</span>
-          </button>
-        </div>
-
-        <!-- Group 2: Synchronization Actions -->
-        <div class="flex items-center gap-1 sm:gap-1.5">
-          <button id="btnLockSync" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-cyan-950/80 text-cyan-300 border border-cyan-500/40 hover:bg-cyan-900/50 transition-colors" title="Allinea i due video sul fotogramma corrente (es. punto di presa d'acqua)">
-            <i data-lucide="anchor" class="w-3.5 h-3.5 text-cyan-400"></i>
-            <span>Allinea Sync Qui</span>
-          </button>
-          <button id="btnToggleLink" class="p-2 rounded-lg text-cyan-400 hover:bg-slate-800 border border-cyan-500/30 transition-colors" title="Lega/Slega timeline video">
-            <i data-lucide="link" id="linkIcon" class="w-4 h-4"></i>
-          </button>
-        </div>
-
-        <!-- Group 3: View Modes -->
-        <div class="flex items-center bg-slate-900/90 rounded-lg p-0.5 border border-white/10 text-xs">
-          <button id="viewSideBySide" class="view-btn active px-2.5 py-1 rounded text-cyan-400 font-semibold" title="Affiancato Orizzontale">
-            <i data-lucide="columns-2" class="w-4 h-4"></i>
-          </button>
-          <button id="viewStacked" class="view-btn px-2.5 py-1 rounded text-slate-400 hover:text-white" title="Affiancato Verticale">
-            <i data-lucide="rows-2" class="w-4 h-4"></i>
-          </button>
-          <button id="viewGhost" class="view-btn px-2.5 py-1 rounded text-slate-400 hover:text-white" title="Sovrapposizione (Ghost X-Ray)">
-            <i data-lucide="layers" class="w-4 h-4"></i>
-          </button>
-        </div>
-
-        <!-- Group 4: Biomechanical Analysis Overlay Tools -->
-        <div class="flex items-center gap-1 bg-slate-900/90 rounded-lg p-1 border border-white/10 text-xs">
-          <button id="toolGoniometer" class="btn-tool px-2.5 py-1 rounded text-slate-300 hover:text-cyan-400 flex items-center gap-1 font-semibold" title="Goniometro: Clicca 3 punti (Spalla -> Gomito -> Polso) per misurare l'angolo d'acqua">
-            <i data-lucide="compass" class="w-3.5 h-3.5 text-cyan-400"></i>
-            <span>Goniometro</span>
-          </button>
-          <button id="toolGrid" class="btn-tool px-2.5 py-1 rounded text-slate-300 hover:text-cyan-400 flex items-center gap-1" title="Mostra griglia idrodinamica e linea d'acqua">
-            <i data-lucide="grid" class="w-3.5 h-3.5 text-cyan-400"></i>
-            <span>Griglia</span>
-          </button>
-          <button id="toolDraw" class="btn-tool px-2 py-1 rounded text-slate-300 hover:text-white" title="Disegno a mano libera">
-            <i data-lucide="pen-tool" class="w-3.5 h-3.5"></i>
-          </button>
-          <button id="toolArrow" class="btn-tool px-2 py-1 rounded text-slate-300 hover:text-white" title="Freccia direzionale spinta">
-            <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
-          </button>
-          <button id="toolUndo" class="p-1 rounded text-slate-400 hover:text-white" title="Annulla ultimo punto">
-            <i data-lucide="undo" class="w-3.5 h-3.5"></i>
-          </button>
-          <button id="toolClear" class="p-1 rounded text-slate-400 hover:text-rose-400" title="Pulisci disegni">
-            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-          </button>
-        </div>
-
-      </div>
-
-      <!-- DUAL VIDEO DISPLAY GRID -->
-      <div id="videoSplitGrid" class="grid grid-cols-1 lg:grid-cols-2 gap-3 flex-1 min-h-[380px] sm:min-h-[460px] relative">
-        
-        <!-- PANE 1: USER VIDEO (SMARTPHONE UPLOAD) -->
-        <div id="containerUser" class="video-stage flex flex-col relative group">
-          <!-- Video Card Header -->
-          <div class="bg-slate-900/80 px-3 py-1.5 flex items-center justify-between border-b border-white/10 z-20">
-            <div class="flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span>
-              <span class="text-xs font-bold text-slate-200">VIDEO SOGGETTO (SMARTPHONE)</span>
-              <span id="userTimeBadge" class="text-[11px] font-mono text-cyan-400 bg-cyan-950/60 px-1.5 py-0.5 rounded border border-cyan-500/20">00:00.00</span>
-            </div>
-
-            <!-- Transforms & Upload Options -->
-            <div class="flex items-center gap-1">
-              <label for="inputVideoUser" class="cursor-pointer px-2 py-1 rounded text-[11px] font-semibold bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/40 flex items-center gap-1 transition-colors">
-                <i data-lucide="upload" class="w-3 h-3"></i>
-                <span>Carica Video</span>
-              </label>
-              <input type="file" id="inputVideoUser" accept="video/*" class="hidden">
-              
-              <!-- Flip & Rotate -->
-              <button id="btnFlipUser" class="p-1 rounded text-slate-400 hover:text-white hover:bg-slate-800" title="Specchia orizzontalmente">
-                <i data-lucide="flip-horizontal" class="w-3.5 h-3.5"></i>
-              </button>
-              <button id="btnRotateUser" class="p-1 rounded text-slate-400 hover:text-white hover:bg-slate-800" title="Ruota 90°">
-                <i data-lucide="rotate-cw" class="w-3.5 h-3.5"></i>
-              </button>
-            </div>
-          </div>
-
-          <!-- Video & Canvas Area -->
-          <div class="video-wrapper flex-1 relative flex items-center justify-center overflow-hidden">
-            <video id="videoUser" class="video-element w-full h-full" playsinline muted loop autoplay preload="auto"></video>
-            <canvas id="canvasUser" class="overlay-canvas"></canvas>
-
-            <!-- Empty state placeholder when no video loaded -->
-            <div id="userPlaceholder" class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center bg-slate-950/90 z-20 transition-opacity">
-              <div class="w-14 h-14 rounded-full bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 mb-3 shadow-lg shadow-cyan-500/20">
-                <i data-lucide="play" class="w-7 h-7 fill-cyan-400"></i>
-              </div>
-              <p class="text-base font-bold text-slate-100">Video del Soggetto</p>
-              <p class="text-xs text-slate-400 max-w-xs mt-1">Carica il tuo video registrato da smartphone oppure clicca qui sotto per caricare il video demo di esempio</p>
-              <div class="flex items-center gap-2 mt-4">
-                <button id="btnLoadUserDemo" class="px-4 py-2 rounded-xl text-xs font-bold bg-cyan-500 hover:bg-cyan-400 text-slate-950 shadow-lg shadow-cyan-500/30 transition-all active:scale-95 flex items-center gap-2">
-                  <i data-lucide="play" class="w-3.5 h-3.5 fill-slate-950"></i>
-                  <span>Avvia Video Dimostrativo</span>
-                </button>
-                <label for="inputVideoUser" class="cursor-pointer px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-white/10 transition-colors flex items-center gap-1.5">
-                  <i data-lucide="upload" class="w-3.5 h-3.5 text-cyan-400"></i>
-                  <span>Carica da File</span>
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- PANE 2: PRO ATHLETE REFERENCE VIDEO -->
-        <div id="containerPro" class="video-stage flex flex-col relative group">
-          <!-- Video Card Header -->
-          <div class="bg-slate-900/80 px-3 py-1.5 flex items-center justify-between border-b border-white/10 z-20">
-            <div class="flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-              <span class="text-xs font-bold text-slate-200">BENCHMARK PRO:</span>
-              <span id="proAthleteName" class="text-xs font-bold text-emerald-400">Michael Phelps (Stile Libero)</span>
-              <span id="proTimeBadge" class="text-[11px] font-mono text-emerald-400 bg-emerald-950/60 px-1.5 py-0.5 rounded border border-emerald-500/20">00:00.00</span>
-            </div>
-
-            <!-- Pro selector & options -->
-            <div class="flex items-center gap-1">
-              <select id="selectProPreset" class="bg-slate-800 text-[11px] text-slate-200 border border-white/10 rounded px-2 py-1 outline-none font-semibold">
-                <option value="freestyle-phelps">Michael Phelps - Stile Libero (Benchmark Élite)</option>
-                <option value="freestyle-evf">David Popovici - EVF Gomito Alto</option>
-                <option value="backstroke-ceccon">Thomas Ceccon - Dorso Flessione 90°</option>
-                <option value="breaststroke-peaty">Adam Peaty - Rana Trazione a Cuore</option>
-                <option value="butterfly-marchand">Léon Marchand - Farfalla Subacquea</option>
-              </select>
-
-              <button id="btnFlipPro" class="p-1 rounded text-slate-400 hover:text-white hover:bg-slate-800" title="Specchia orizzontalmente">
-                <i data-lucide="flip-horizontal" class="w-3.5 h-3.5"></i>
-              </button>
-              <button id="btnRotatePro" class="p-1 rounded text-slate-400 hover:text-white hover:bg-slate-800" title="Ruota 90°">
-                <i data-lucide="rotate-cw" class="w-3.5 h-3.5"></i>
-              </button>
-            </div>
-          </div>
-
-          <!-- Video & Canvas Area -->
-          <div class="video-wrapper flex-1 relative flex items-center justify-center overflow-hidden">
-            <video id="videoPro" class="video-element w-full h-full" playsinline muted loop autoplay preload="auto"></video>
-            <canvas id="canvasPro" class="overlay-canvas"></canvas>
-          </div>
-        </div>
-
-        <!-- GHOST / OVERLAY MODE CONTAINER (Hidden by default) -->
-        <div id="ghostContainer" class="video-stage hidden col-span-1 lg:col-span-2 flex flex-col relative">
-          <div class="bg-slate-900/80 px-3 py-1.5 flex items-center justify-between border-b border-white/10 z-20">
-            <div class="flex items-center gap-3">
-              <span class="text-xs font-bold text-cyan-400 flex items-center gap-1.5">
-                <i data-lucide="layers" class="w-3.5 h-3.5"></i>
-                SOVRAPPOSIZIONE GHOST X-RAY (Utente + Pro)
-              </span>
-              <div class="flex items-center gap-2 text-xs text-slate-400">
-                <span>Opacità Pro:</span>
-                <input type="range" id="ghostOpacitySlider" min="0" max="1" step="0.05" value="0.5" class="w-24">
-              </div>
-            </div>
-          </div>
-          <div class="ghost-container flex-1 relative flex items-center justify-center overflow-hidden bg-black">
-            <video id="ghostVideoUser" class="video-element w-full h-full" playsinline muted loop></video>
-            <video id="ghostVideoPro" class="ghost-video-pro" playsinline muted loop style="opacity: 0.5;"></video>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- BOTTOM CONTROL BAR: TIMELINES & CADENCE METRICS -->
-      <div class="glass-panel rounded-xl p-3 mt-3 border border-white/10 shadow-lg flex flex-col gap-2.5">
-        
-        <!-- Scrubber Timeline with Markers -->
-        <div class="flex items-center gap-3">
-          <span class="text-xs font-mono text-slate-400 min-w-[50px]" id="currentTimelineTime">00:00.0</span>
-          
-          <div class="relative flex-1 flex items-center">
-            <input type="range" id="timelineSlider" min="0" max="100" value="0" step="0.01" class="w-full cursor-pointer z-10">
-            <div id="loopRangeBar" class="absolute h-1.5 bg-cyan-500/40 rounded pointer-events-none hidden" style="left: 0; width: 0;"></div>
-          </div>
-
-          <span class="text-xs font-mono text-slate-400 min-w-[50px] text-right" id="totalTimelineDuration">00:00.0</span>
-        </div>
-
-        <!-- Metrics Strip (Stroke Rate, Angle Badge, Synchronizer Offset) -->
-        <div class="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-white/10">
-          
-          <!-- Stroke Rate Tap Cadence Counter -->
-          <div class="flex items-center gap-2">
-            <button id="btnTapCadence" class="px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 font-bold text-xs border border-cyan-500/30 flex items-center gap-1.5 active:scale-95 transition-all">
-              <i data-lucide="activity" class="w-3.5 h-3.5 text-cyan-400"></i>
-              <span>Tocca per Cadenza (SPM)</span>
-            </button>
-            <div class="flex items-center gap-1.5 text-xs font-mono">
-              <span id="cadenceBadge" class="px-2 py-0.5 rounded badge-cyan font-bold">-- SPM</span>
-              <span id="cycleTimeBadge" class="text-slate-400 text-[11px]">Ciclo: --s</span>
-            </div>
-          </div>
-
-          <!-- Measured Angle Pill -->
-          <div class="flex items-center gap-2">
-            <span class="text-xs text-slate-400 font-medium">Angolo Rilevato:</span>
-            <div id="measuredAngleBadge" class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-slate-900 border border-white/10 text-slate-300">
-              Usa il goniometro
-            </div>
-          </div>
-
-          <!-- Benchmark Target Pill -->
-          <div class="flex items-center gap-2">
-            <span class="text-xs text-slate-400 font-medium">Target Ideale EVF:</span>
-            <span id="targetAngleBadge" class="text-xs font-mono font-bold text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-500/30">100° - 120°</span>
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-    <!-- RIGHT: AI SWIMMING COACH & BIOMECHANICAL REPORT DRAWER -->
-    <aside id="coachDrawer" class="w-full lg:w-96 bg-[#121c2d] border-l border-white/10 flex flex-col shrink-0 overflow-hidden transition-all duration-300">
+    <!-- ============================================== -->
+    <!-- VIEW 1: AQUASCAN MOBILE (EXPRESS BORDOVASCA)  -->
+    <!-- Designed for 1-hand smartphone usage poolside  -->
+    <!-- ============================================== -->
+    <div id="mobileExpressView" class="w-full flex-1 flex flex-col overflow-y-auto max-w-2xl mx-auto p-3 sm:p-5 space-y-4">
       
-      <!-- Drawer Header -->
-      <div class="p-3.5 border-b border-white/10 flex items-center justify-between bg-slate-900/60">
-        <div class="flex items-center gap-2">
-          <div class="w-7 h-7 rounded-lg bg-gradient-to-tr from-cyan-400 to-emerald-400 flex items-center justify-center text-slate-950 font-black text-sm">
-            AI
-          </div>
-          <div>
-            <h2 class="text-sm font-bold text-white leading-none">AI Swimming Coach</h2>
-            <p class="text-[11px] text-slate-400">Diagnosi Biomeccanica & Correzioni</p>
-          </div>
+      <!-- Top Context Banner -->
+      <div class="glass-panel rounded-2xl p-4 border border-cyan-500/30 shadow-lg relative overflow-hidden">
+        <div class="absolute -right-8 -top-8 w-28 h-28 bg-cyan-500/10 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="flex items-center justify-between gap-2 mb-1.5">
+          <span class="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+            AquaScan Express • Bordo Vasca
+          </span>
+          <span class="text-[11px] font-mono px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-white/10">1-Tap Scanner</span>
         </div>
-        <button id="btnCloseCoachDrawer" class="lg:hidden p-1 rounded text-slate-400 hover:text-white">
-          <i data-lucide="x" class="w-4 h-4"></i>
-        </button>
+        <h2 class="text-base font-bold text-white tracking-tight">Analisi Biomeccanica Rapida da Smartphone</h2>
+        <p class="text-xs text-slate-300 mt-1 leading-relaxed">
+          Punta e filma l'atleta (4-8 secondi): l'app estrae i fotogrammi chiave, individua discrepanze ed errori rispetto ai campioni d'élite e ti fornisce subito le soluzioni in vasca e gli esercizi a secco.
+        </p>
       </div>
 
-      <!-- Drawer Scrollable Content -->
-      <div class="flex-1 overflow-y-auto p-4 space-y-4">
-        
-        <!-- Score Card -->
-        <div class="glass-panel-elevated rounded-xl p-3.5">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-xs font-semibold text-slate-300 uppercase tracking-wider">Efficienza Tecnica</span>
-            <span id="coachScoreBadge" class="text-xl font-mono font-black text-cyan-400">7.5<span class="text-xs text-slate-400 font-normal">/10</span></span>
+      <!-- STEP 1: Selettore Stile & Prospettiva -->
+      <div class="glass-panel rounded-2xl p-3.5 border border-white/10 space-y-3">
+        <!-- 1. Stile -->
+        <div>
+          <label class="block text-xs font-bold text-slate-300 mb-1.5 uppercase tracking-wider">1. Seleziona Stile di Nuoto</label>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+            <button class="mobile-stroke-btn active py-2 px-2 rounded-xl text-xs font-bold bg-cyan-500 text-slate-950 flex items-center justify-center gap-1.5 transition-all shadow-md shadow-cyan-500/20" data-stroke="freestyle">
+              🏊 Stile Libero
+            </button>
+            <button class="mobile-stroke-btn py-2 px-2 rounded-xl text-xs font-semibold bg-slate-900/90 text-slate-300 border border-white/5 hover:border-cyan-500/30 flex items-center justify-center gap-1.5 transition-all" data-stroke="backstroke">
+              🏊 Dorso
+            </button>
+            <button class="mobile-stroke-btn py-2 px-2 rounded-xl text-xs font-semibold bg-slate-900/90 text-slate-300 border border-white/5 hover:border-cyan-500/30 flex items-center justify-center gap-1.5 transition-all" data-stroke="breaststroke">
+              🐸 Rana
+            </button>
+            <button class="mobile-stroke-btn py-2 px-2 rounded-xl text-xs font-semibold bg-slate-900/90 text-slate-300 border border-white/5 hover:border-cyan-500/30 flex items-center justify-center gap-1.5 transition-all" data-stroke="butterfly">
+              🦋 Farfalla
+            </button>
           </div>
-          <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden mb-2">
-            <div id="coachScoreBar" class="bg-gradient-to-r from-cyan-500 to-emerald-400 h-full rounded-full transition-all duration-500" style="width: 75%"></div>
+        </div>
+
+        <!-- 2. Prospettiva Ripresa -->
+        <div>
+          <div class="flex items-center justify-between mb-1.5">
+            <label class="text-xs font-bold text-slate-300 uppercase tracking-wider">2. Prospettiva della Ripresa Smartphone</label>
+            <span id="perspectiveHint" class="text-[10px] text-cyan-400 font-mono">Laterale (EVF & linea d'acqua)</span>
           </div>
-          <p id="coachSummaryVerdict" class="text-xs text-slate-300 italic">
-            Buona continuità di bracciata. Da ottimizzare l'angolo di presa d'acqua (EVF) per ridurre lo slittamento dell'avambraccio.
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+            <button class="mobile-persp-btn active py-2 px-2 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 flex items-center justify-center gap-1.5 transition-all shadow-md shadow-emerald-500/20" data-persp="lateral">
+              📐 Laterale
+            </button>
+            <button class="mobile-persp-btn py-2 px-2 rounded-xl text-xs font-semibold bg-slate-900/90 text-slate-300 border border-white/5 hover:border-emerald-500/30 flex items-center justify-center gap-1.5 transition-all" data-persp="frontal">
+              🎯 Frontale
+            </button>
+            <button class="mobile-persp-btn py-2 px-2 rounded-xl text-xs font-semibold bg-slate-900/90 text-slate-300 border border-white/5 hover:border-emerald-500/30 flex items-center justify-center gap-1.5 transition-all" data-persp="posterior">
+              🔙 Posteriore
+            </button>
+            <button class="mobile-persp-btn py-2 px-2 rounded-xl text-xs font-semibold bg-slate-900/90 text-slate-300 border border-white/5 hover:border-emerald-500/30 flex items-center justify-center gap-1.5 transition-all" data-persp="underwater">
+              🤿 Subacqueo
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2: Big 1-Tap Camera Action Card -->
+      <div id="mobileCaptureSection" class="glass-panel-elevated rounded-2xl p-6 border border-cyan-500/40 text-center relative overflow-hidden transition-all shadow-xl">
+        <label for="mobileCameraInput" class="cursor-pointer block">
+          <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-tr from-cyan-500 to-emerald-400 flex items-center justify-center text-slate-950 mb-3 shadow-xl shadow-cyan-500/30 camera-pulse active:scale-95 transition-transform">
+            <i data-lucide="camera" class="w-10 h-10"></i>
+          </div>
+          <h3 class="text-base sm:text-lg font-black text-white tracking-tight uppercase">Tocca per Registrare Video</h3>
+          <p class="text-xs text-slate-300 mt-1 max-w-sm mx-auto">
+            Avvia la fotocamera del tuo smartphone e filma il passaggio dell'atleta (4-8 secondi).
           </p>
+        </label>
+        <input type="file" id="mobileCameraInput" accept="video/*" capture="environment" class="hidden">
+
+        <!-- Secondary Fast Triggers -->
+        <div class="flex items-center justify-center gap-2 mt-4 pt-3 border-t border-white/10">
+          <label for="mobileGalleryInput" class="cursor-pointer px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 border border-white/10 flex items-center gap-1.5 transition-colors">
+            <i data-lucide="image" class="w-3.5 h-3.5 text-cyan-400"></i>
+            <span>Dalla Galleria</span>
+          </label>
+          <input type="file" id="mobileGalleryInput" accept="video/*" class="hidden">
+
+          <button id="btnMobileRunDemo" class="px-3.5 py-1.5 rounded-xl bg-cyan-950/80 hover:bg-cyan-900/80 text-xs font-bold text-cyan-300 border border-cyan-500/40 flex items-center gap-1.5 transition-all">
+            <i data-lucide="play-circle" class="w-3.5 h-3.5 text-cyan-400"></i>
+            <span>⚡ Prova Video Demo</span>
+          </button>
         </div>
+      </div>
 
-        <!-- 5 Phases Biomechanical Breakdown -->
-        <div class="space-y-2">
-          <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Le 5 Fasi della Nuotata</h3>
-          
-          <div class="space-y-1.5 text-xs">
-            <!-- Phase 1: Entry -->
-            <div class="phase-card p-2.5 rounded-lg bg-slate-900/80 border border-white/5 hover:border-cyan-500/30 transition-all cursor-pointer" data-phase-idx="0">
-              <div class="flex items-center justify-between font-semibold">
-                <span class="text-slate-200">1. Ingresso & Scivolamento</span>
-                <span class="text-emerald-400 text-[11px] font-mono">160°-175°</span>
-              </div>
-              <p class="text-[11px] text-slate-400 mt-0.5">Ingresso sulla linea della spalla senza incrociare.</p>
+      <!-- STEP 3: Scanner Processing / Live Progress Animation -->
+      <div id="mobileScanningProgress" class="glass-panel rounded-2xl p-5 border border-cyan-500/30 hidden flex-col items-center justify-center text-center space-y-4 animate-fade-in relative overflow-hidden">
+        <div class="scanner-beam"></div>
+        <div class="w-14 h-14 rounded-full bg-cyan-500/10 border border-cyan-500/40 flex items-center justify-center text-cyan-400 animate-spin">
+          <i data-lucide="refresh-cw" class="w-7 h-7"></i>
+        </div>
+        <div>
+          <h4 id="scanningStatusHeading" class="text-sm font-bold text-white tracking-tight">Estrazione Fotogrammi Chiave in Corso...</h4>
+          <p id="scanningStatusSub" class="text-xs text-slate-400 font-mono mt-0.5">Scansione cinematica Early Vertical Forearm & rollio...</p>
+        </div>
+        <div class="w-full bg-slate-900 rounded-full h-2 overflow-hidden max-w-xs border border-white/10">
+          <div id="mobileProgressBar" class="bg-gradient-to-r from-cyan-500 to-emerald-400 h-full rounded-full transition-all duration-300" style="width: 25%"></div>
+        </div>
+      </div>
+
+      <!-- STEP 4: DIAGNOSTIC REPORT CARD (Shown after scan) -->
+      <div id="mobileReportSection" class="hidden space-y-4 animate-fade-in">
+        
+        <!-- Score & Benchmark Hero Card -->
+        <div class="glass-panel-elevated rounded-2xl p-4 border border-cyan-500/30 shadow-xl relative overflow-hidden">
+          <div class="flex items-center justify-between mb-2">
+            <div>
+              <span id="reportStrokeBadge" class="text-[11px] font-bold px-2 py-0.5 rounded-full badge-cyan">Stile Libero</span>
+              <span id="reportPerspBadge" class="text-[11px] font-mono text-slate-400 ml-1.5">Ripresa Laterale</span>
             </div>
-
-            <!-- Phase 2: Catch (Active) -->
-            <div class="phase-card p-2.5 rounded-lg bg-cyan-950/40 border border-cyan-500/40 transition-all cursor-pointer shadow-sm" data-phase-idx="1">
-              <div class="flex items-center justify-between font-semibold">
-                <span class="text-cyan-300 flex items-center gap-1.5">
-                  <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
-                  2. Presa d'Acqua (EVF)
-                </span>
-                <span class="text-cyan-400 text-[11px] font-mono">100°-120°</span>
-              </div>
-              <p class="text-[11px] text-slate-300 mt-0.5">Avambraccio verticale a pala, gomito più alto del polso.</p>
+            <div class="flex items-baseline gap-1">
+              <span class="text-xs text-slate-400">Valutazione:</span>
+              <span id="reportScoreNum" class="text-2xl font-mono font-black text-cyan-400">6.8</span>
+              <span class="text-xs text-slate-400">/10</span>
             </div>
+          </div>
 
-            <!-- Phase 3: Pull & Push -->
-            <div class="phase-card p-2.5 rounded-lg bg-slate-900/80 border border-white/5 hover:border-cyan-500/30 transition-all cursor-pointer" data-phase-idx="2">
-              <div class="flex items-center justify-between font-semibold">
-                <span class="text-slate-200">3. Trazione & Spinta</span>
-                <span class="text-emerald-400 text-[11px] font-mono">90°-105°</span>
-              </div>
-              <p class="text-[11px] text-slate-400 mt-0.5">Accelerazione posteriore fino al tocco della coscia.</p>
-            </div>
+          <p id="reportVerdictText" class="text-xs text-slate-200 italic mb-3">
+            Gomito caduto nella presa (-35% di propulsione) e affossamento del bacino causato dal sollevamento della testa.
+          </p>
 
-            <!-- Phase 4: Recovery -->
-            <div class="phase-card p-2.5 rounded-lg bg-slate-900/80 border border-white/5 hover:border-cyan-500/30 transition-all cursor-pointer" data-phase-idx="3">
-              <div class="flex items-center justify-between font-semibold">
-                <span class="text-slate-200">4. Recupero Aereo</span>
-                <span class="text-emerald-400 text-[11px] font-mono">70°-90°</span>
-              </div>
-              <p class="text-[11px] text-slate-400 mt-0.5">Gomito alto decontratto, mano vicina al pelo dell'acqua.</p>
-            </div>
-
-            <!-- Phase 5: Kick & Body Roll -->
-            <div class="phase-card p-2.5 rounded-lg bg-slate-900/80 border border-white/5 hover:border-cyan-500/30 transition-all cursor-pointer" data-phase-idx="4">
-              <div class="flex items-center justify-between font-semibold">
-                <span class="text-slate-200">5. Rollio & Gambata</span>
-                <span class="text-emerald-400 text-[11px] font-mono">35°-45° Roll</span>
-              </div>
-              <p class="text-[11px] text-slate-400 mt-0.5">Rotazione intorno all'asse longitudinale, gambe compatte.</p>
+          <!-- Filmstrip of 4 Extracted Keyframes -->
+          <div class="space-y-1">
+            <span class="text-[10px] uppercase font-mono text-slate-400 tracking-wider">Fotogrammi Chiave Estratti dal Video</span>
+            <div id="mobileFilmstrip" class="filmstrip-scroll pt-1">
+              <!-- Populated dynamically with extracted frames -->
             </div>
           </div>
         </div>
 
-        <!-- Corrective Pool Drills -->
-        <div class="space-y-2">
-          <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-            <i data-lucide="dumbbell" class="w-3.5 h-3.5 text-cyan-400"></i>
-            Esercizi Correttivi Consigliati
-          </h3>
-          <div id="coachDrillsList" class="space-y-1.5 text-xs text-slate-300">
+        <!-- Section 1: ⚠️ Discrepanze & Errori (Macro e Micro) -->
+        <div class="glass-panel rounded-2xl p-4 border border-rose-500/30 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <h3 class="text-xs font-bold text-rose-400 uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-400"></i>
+              Problematiche Rilevate vs Canoni Élite
+            </h3>
+            <span class="text-[10px] font-mono text-slate-400">Macro & Micro Errori</span>
+          </div>
+
+          <div id="mobileFaultsList" class="space-y-2 text-xs">
             <!-- Populated dynamically -->
           </div>
         </div>
 
-        <!-- Vision AI Coach Button -->
-        <div class="pt-2">
-          <button id="btnRunGeminiAnalysis" class="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-cyan-500 via-blue-600 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-slate-950 font-bold text-xs shadow-lg shadow-cyan-500/20 flex items-center justify-center gap-2 transition-all active:scale-[0.98]">
-            <i data-lucide="brain-circuit" class="w-4 h-4 text-slate-950"></i>
-            <span>Analisi Vision AI Completa (Gemini)</span>
+        <!-- Section 2: 🏊‍♂️ Soluzioni in Vasca (Esercizi Acqua) -->
+        <div class="glass-panel rounded-2xl p-4 border border-cyan-500/30 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <h3 class="text-xs font-bold text-cyan-300 uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="waves" class="w-4 h-4 text-cyan-400"></i>
+              Soluzioni in Vasca (Esercizi in Acqua)
+            </h3>
+            <span class="text-[10px] font-mono text-slate-400">Con Attrezzi & Serie</span>
+          </div>
+
+          <div id="mobileWaterDrillsList" class="space-y-2.5 text-xs">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Section 3: 🏋️‍♂️ Soluzioni a Secco (Esercizi Dryland / Palestra) -->
+        <div class="glass-panel rounded-2xl p-4 border border-emerald-500/30 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="dumbbell" class="w-4 h-4 text-emerald-400"></i>
+              Soluzioni a Secco (Palestra & Elastici)
+            </h3>
+            <span class="text-[10px] font-mono text-slate-400">Memoria Neuromuscolare</span>
+          </div>
+
+          <div id="mobileDrylandDrillsList" class="space-y-2.5 text-xs">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Action Bar (Sticky at bottom of report) -->
+        <div class="glass-panel-elevated rounded-2xl p-3 border border-white/10 flex flex-col sm:flex-row items-center gap-2 shadow-2xl">
+          <a id="btnShareWhatsApp" target="_blank" class="w-full sm:flex-1 py-2.5 px-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 transition-all active:scale-95">
+            <i data-lucide="message-circle" class="w-4 h-4 fill-slate-950"></i>
+            <span>Invia su WhatsApp all'Atleta</span>
+          </a>
+
+          <button id="btnCopyMobileReport" class="w-full sm:w-auto py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs border border-white/10 flex items-center justify-center gap-1.5 transition-colors">
+            <i data-lucide="copy" class="w-3.5 h-3.5 text-cyan-400"></i>
+            <span>Copia Scheda</span>
           </button>
-          <p class="text-[10px] text-slate-400 text-center mt-1.5">
-            Invia i fotogrammi sincronizzati all'AI per un'analisi biomeccanica dettagliata
-          </p>
+
+          <button id="btnResetMobileAnalysis" class="w-full sm:w-auto py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white font-semibold text-xs border border-white/10 flex items-center justify-center gap-1.5 transition-colors">
+            <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+            <span>Nuova Analisi</span>
+          </button>
         </div>
 
       </div>
 
-    </aside>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- VIEW 2: DESKTOP STUDIO LAB (ADVANCED DUAL SYNC)-->
+    <!-- Full analysis suite with goniometer & pro sync -->
+    <!-- ============================================== -->
+    <div id="desktopLabView" class="flex-1 flex flex-col lg:flex-row overflow-hidden relative hidden">
+
+      <!-- LEFT: VIDEO WORKSPACE & CONTROLS -->
+      <section class="flex-1 flex flex-col min-w-0 bg-[#070b13] p-2.5 sm:p-4 overflow-y-auto">
+
+        <!-- TOOLBAR: PLAYBACK & BIOMECHANICAL TOOLS -->
+        <div class="glass-panel rounded-xl p-2 sm:p-2.5 mb-3 flex flex-wrap items-center justify-between gap-2 border border-white/10 shadow-lg">
+          
+          <!-- Group 1: Playback controls -->
+          <div class="flex items-center gap-1 sm:gap-1.5">
+            <!-- Play / Pause -->
+            <button id="btnPlayPause" class="flex items-center justify-center w-10 h-9 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold shadow-md shadow-cyan-500/20 transition-transform active:scale-95" title="Riproduci / Pausa (Spazio)">
+              <i data-lucide="play" id="playIcon" class="w-4 h-4 fill-slate-950"></i>
+            </button>
+
+            <!-- Step Backward / Forward 1 frame -->
+            <button id="btnPrevFrame" class="p-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 border border-white/10 transition-colors" title="Fotogramma precedente (-1 frame)">
+              <i data-lucide="skip-back" class="w-4 h-4"></i>
+            </button>
+            <button id="btnNextFrame" class="p-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 border border-white/10 transition-colors" title="Fotogramma successivo (+1 frame)">
+              <i data-lucide="skip-forward" class="w-4 h-4"></i>
+            </button>
+
+            <!-- Speed Selector -->
+            <div class="flex items-center bg-slate-900/90 rounded-lg p-0.5 border border-white/10 text-xs font-mono ml-1">
+              <button class="speed-btn px-2 py-1 rounded text-slate-400 hover:text-white" data-speed="0.1">0.1x</button>
+              <button class="speed-btn px-2 py-1 rounded text-slate-400 hover:text-white" data-speed="0.25">0.25x</button>
+              <button class="speed-btn active px-2 py-1 rounded bg-cyan-500/20 text-[#00e5ff] font-bold" data-speed="0.5">0.5x</button>
+              <button class="speed-btn px-2 py-1 rounded text-slate-400 hover:text-white" data-speed="1.0">1.0x</button>
+            </div>
+
+            <!-- A-B Cycle Loop Toggle -->
+            <button id="btnToggleLoop" class="btn-tool flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 border border-white/10 transition-colors" title="Ripeti ciclo bracciata in loop">
+              <i data-lucide="repeat" class="w-3.5 h-3.5"></i>
+              <span class="hidden sm:inline">Loop</span>
+            </button>
+          </div>
+
+          <!-- Group 2: Synchronization Actions -->
+          <div class="flex items-center gap-1 sm:gap-1.5">
+            <button id="btnLockSync" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-cyan-950/80 text-cyan-300 border border-cyan-500/40 hover:bg-cyan-900/50 transition-colors" title="Allinea i due video sul fotogramma corrente (es. punto di presa d'acqua)">
+              <i data-lucide="anchor" class="w-3.5 h-3.5 text-cyan-400"></i>
+              <span>Allinea Sync</span>
+            </button>
+            <button id="btnToggleLink" class="p-2 rounded-lg text-cyan-400 hover:bg-slate-800 border border-cyan-500/30 transition-colors" title="Lega/Slega timeline video">
+              <i data-lucide="link" id="linkIcon" class="w-4 h-4"></i>
+            </button>
+          </div>
+
+          <!-- Group 3: View Modes -->
+          <div class="flex items-center bg-slate-900/90 rounded-lg p-0.5 border border-white/10 text-xs">
+            <button id="viewSideBySide" class="view-btn active px-2.5 py-1 rounded text-cyan-400 font-semibold" title="Affiancato Orizzontale">
+              <i data-lucide="columns-2" class="w-4 h-4"></i>
+            </button>
+            <button id="viewStacked" class="view-btn px-2.5 py-1 rounded text-slate-400 hover:text-white" title="Affiancato Verticale">
+              <i data-lucide="rows-2" class="w-4 h-4"></i>
+            </button>
+            <button id="viewGhost" class="view-btn px-2.5 py-1 rounded text-slate-400 hover:text-white" title="Sovrapposizione (Ghost X-Ray)">
+              <i data-lucide="layers" class="w-4 h-4"></i>
+            </button>
+          </div>
+
+          <!-- Group 4: Biomechanical Analysis Overlay Tools -->
+          <div class="flex items-center gap-1 bg-slate-900/90 rounded-lg p-1 border border-white/10 text-xs">
+            <button id="toolGoniometer" class="btn-tool px-2.5 py-1 rounded text-slate-300 hover:text-cyan-400 flex items-center gap-1 font-semibold" title="Goniometro: Clicca 3 punti (Spalla -> Gomito -> Polso) per misurare l'angolo d'acqua">
+              <i data-lucide="compass" class="w-3.5 h-3.5 text-cyan-400"></i>
+              <span>Goniometro</span>
+            </button>
+            <button id="toolGrid" class="btn-tool px-2.5 py-1 rounded text-slate-300 hover:text-cyan-400 flex items-center gap-1" title="Mostra griglia idrodinamica e linea d'acqua">
+              <i data-lucide="grid" class="w-3.5 h-3.5 text-cyan-400"></i>
+              <span>Griglia</span>
+            </button>
+            <button id="toolDraw" class="btn-tool px-2 py-1 rounded text-slate-300 hover:text-white" title="Disegno a mano libera">
+              <i data-lucide="pen-tool" class="w-3.5 h-3.5"></i>
+            </button>
+            <button id="toolArrow" class="btn-tool px-2 py-1 rounded text-slate-300 hover:text-white" title="Freccia direzionale spinta">
+              <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+            </button>
+            <button id="toolUndo" class="p-1 rounded text-slate-400 hover:text-white" title="Annulla ultimo punto">
+              <i data-lucide="undo" class="w-3.5 h-3.5"></i>
+            </button>
+            <button id="toolClear" class="p-1 rounded text-slate-400 hover:text-rose-400" title="Pulisci disegni">
+              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- DUAL VIDEO DISPLAY GRID -->
+        <div id="videoSplitGrid" class="grid grid-cols-1 lg:grid-cols-2 gap-3 flex-1 min-h-[380px] sm:min-h-[460px] relative">
+          
+          <!-- PANE 1: USER VIDEO (SMARTPHONE UPLOAD) -->
+          <div id="containerUser" class="video-stage flex flex-col relative group">
+            <div class="bg-slate-900/80 px-3 py-1.5 flex items-center justify-between border-b border-white/10 z-20">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span>
+                <span class="text-xs font-bold text-slate-200">SOGGETTO (SMARTPHONE)</span>
+                <span id="userTimeBadge" class="text-[11px] font-mono text-cyan-400 bg-cyan-950/60 px-1.5 py-0.5 rounded border border-cyan-500/20">00:00.00</span>
+              </div>
+
+              <div class="flex items-center gap-1">
+                <label for="inputVideoUser" class="cursor-pointer px-2 py-1 rounded text-[11px] font-semibold bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/40 flex items-center gap-1 transition-colors">
+                  <i data-lucide="upload" class="w-3 h-3"></i>
+                  <span>Carica Video</span>
+                </label>
+                <input type="file" id="inputVideoUser" accept="video/*" class="hidden">
+                
+                <button id="btnFlipUser" class="p-1 rounded text-slate-400 hover:text-white hover:bg-slate-800" title="Specchia orizzontalmente">
+                  <i data-lucide="flip-horizontal" class="w-3.5 h-3.5"></i>
+                </button>
+                <button id="btnRotateUser" class="p-1 rounded text-slate-400 hover:text-white hover:bg-slate-800" title="Ruota 90°">
+                  <i data-lucide="rotate-cw" class="w-3.5 h-3.5"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="video-wrapper flex-1 relative flex items-center justify-center overflow-hidden">
+              <video id="videoUser" class="video-element w-full h-full" playsinline muted loop autoplay preload="auto"></video>
+              <canvas id="canvasUser" class="overlay-canvas"></canvas>
+
+              <div id="userPlaceholder" class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center bg-slate-950/90 z-20 transition-opacity">
+                <div class="w-14 h-14 rounded-full bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 mb-3 shadow-lg shadow-cyan-500/20">
+                  <i data-lucide="play" class="w-7 h-7 fill-cyan-400"></i>
+                </div>
+                <p class="text-base font-bold text-slate-100">Video del Soggetto</p>
+                <p class="text-xs text-slate-400 max-w-xs mt-1">Carica il tuo video registrato da smartphone oppure clicca qui sotto per caricare il video demo di esempio</p>
+                <div class="flex items-center gap-2 mt-4">
+                  <button id="btnLoadUserDemo" class="px-4 py-2 rounded-xl text-xs font-bold bg-cyan-500 hover:bg-cyan-400 text-slate-950 shadow-lg shadow-cyan-500/30 transition-all active:scale-95 flex items-center gap-2">
+                    <i data-lucide="play" class="w-3.5 h-3.5 fill-slate-950"></i>
+                    <span>Avvia Video Dimostrativo</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PANE 2: PRO ATHLETE REFERENCE VIDEO -->
+          <div id="containerPro" class="video-stage flex flex-col relative group">
+            <div class="bg-slate-900/80 px-3 py-1.5 flex items-center justify-between border-b border-white/10 z-20">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                <span class="text-xs font-bold text-slate-200">BENCHMARK PRO:</span>
+                <span id="proAthleteName" class="text-xs font-bold text-emerald-400">Michael Phelps (Stile Libero)</span>
+                <span id="proTimeBadge" class="text-[11px] font-mono text-emerald-400 bg-emerald-950/60 px-1.5 py-0.5 rounded border border-emerald-500/20">00:00.00</span>
+              </div>
+
+              <div class="flex items-center gap-1">
+                <select id="selectProPreset" class="bg-slate-800 text-[11px] text-slate-200 border border-white/10 rounded px-2 py-1 outline-none font-semibold">
+                  <option value="freestyle-phelps">Michael Phelps - Stile Libero (Benchmark Élite)</option>
+                  <option value="freestyle-evf">David Popovici - EVF Gomito Alto</option>
+                  <option value="backstroke-ceccon">Thomas Ceccon - Dorso Flessione 90°</option>
+                  <option value="breaststroke-peaty">Adam Peaty - Rana Trazione a Cuore</option>
+                  <option value="butterfly-marchand">Léon Marchand - Farfalla Subacquea</option>
+                </select>
+
+                <button id="btnFlipPro" class="p-1 rounded text-slate-400 hover:text-white hover:bg-slate-800" title="Specchia orizzontalmente">
+                  <i data-lucide="flip-horizontal" class="w-3.5 h-3.5"></i>
+                </button>
+                <button id="btnRotatePro" class="p-1 rounded text-slate-400 hover:text-white hover:bg-slate-800" title="Ruota 90°">
+                  <i data-lucide="rotate-cw" class="w-3.5 h-3.5"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="video-wrapper flex-1 relative flex items-center justify-center overflow-hidden">
+              <video id="videoPro" class="video-element w-full h-full" playsinline muted loop autoplay preload="auto"></video>
+              <canvas id="canvasPro" class="overlay-canvas"></canvas>
+            </div>
+          </div>
+
+          <!-- GHOST / OVERLAY MODE CONTAINER -->
+          <div id="ghostContainer" class="video-stage hidden col-span-1 lg:col-span-2 flex flex-col relative">
+            <div class="bg-slate-900/80 px-3 py-1.5 flex items-center justify-between border-b border-white/10 z-20">
+              <div class="flex items-center gap-3">
+                <span class="text-xs font-bold text-cyan-400 flex items-center gap-1.5">
+                  <i data-lucide="layers" class="w-3.5 h-3.5"></i>
+                  SOVRAPPOSIZIONE GHOST X-RAY (Utente + Pro)
+                </span>
+                <div class="flex items-center gap-2 text-xs text-slate-400">
+                  <span>Opacità Pro:</span>
+                  <input type="range" id="ghostOpacitySlider" min="0" max="1" step="0.05" value="0.5" class="w-24">
+                </div>
+              </div>
+            </div>
+            <div class="ghost-container flex-1 relative flex items-center justify-center overflow-hidden bg-black">
+              <video id="ghostVideoUser" class="video-element w-full h-full" playsinline muted loop></video>
+              <video id="ghostVideoPro" class="ghost-video-pro" playsinline muted loop style="opacity: 0.5;"></video>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- BOTTOM CONTROL BAR: TIMELINES & CADENCE METRICS -->
+        <div class="glass-panel rounded-xl p-3 mt-3 border border-white/10 shadow-lg flex flex-col gap-2.5">
+          <div class="flex items-center gap-3">
+            <span class="text-xs font-mono text-slate-400 min-w-[50px]" id="currentTimelineTime">00:00.0</span>
+            <div class="relative flex-1 flex items-center">
+              <input type="range" id="timelineSlider" min="0" max="100" value="0" step="0.01" class="w-full cursor-pointer z-10">
+              <div id="loopRangeBar" class="absolute h-1.5 bg-cyan-500/40 rounded pointer-events-none hidden" style="left: 0; width: 0;"></div>
+            </div>
+            <span class="text-xs font-mono text-slate-400 min-w-[50px] text-right" id="totalTimelineDuration">00:00.0</span>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-white/10">
+            <div class="flex items-center gap-2">
+              <button id="btnTapCadence" class="px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 font-bold text-xs border border-cyan-500/30 flex items-center gap-1.5 active:scale-95 transition-all">
+                <i data-lucide="activity" class="w-3.5 h-3.5 text-cyan-400"></i>
+                <span>Tocca per Cadenza (SPM)</span>
+              </button>
+              <div class="flex items-center gap-1.5 text-xs font-mono">
+                <span id="cadenceBadge" class="px-2 py-0.5 rounded badge-cyan font-bold">-- SPM</span>
+                <span id="cycleTimeBadge" class="text-slate-400 text-[11px]">Ciclo: --s</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-slate-400 font-medium">Angolo Rilevato:</span>
+              <div id="measuredAngleBadge" class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-slate-900 border border-white/10 text-slate-300">
+                Usa il goniometro
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-slate-400 font-medium">Target Ideale EVF:</span>
+              <span id="targetAngleBadge" class="text-xs font-mono font-bold text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-500/30">100° - 120°</span>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- RIGHT: AI SWIMMING COACH & BIOMECHANICAL REPORT DRAWER -->
+      <aside id="coachDrawer" class="w-full lg:w-96 bg-[#121c2d] border-l border-white/10 flex flex-col shrink-0 overflow-hidden transition-all duration-300">
+        <div class="p-3.5 border-b border-white/10 flex items-center justify-between bg-slate-900/60">
+          <div class="flex items-center gap-2">
+            <div class="w-7 h-7 rounded-lg bg-gradient-to-tr from-cyan-400 to-emerald-400 flex items-center justify-center text-slate-950 font-black text-sm">
+              AI
+            </div>
+            <div>
+              <h2 class="text-sm font-bold text-white leading-none">AI Swimming Coach</h2>
+              <p class="text-[11px] text-slate-400">Diagnosi Biomeccanica & Correzioni</p>
+            </div>
+          </div>
+          <button id="btnCloseCoachDrawer" class="lg:hidden p-1 rounded text-slate-400 hover:text-white">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-4 space-y-4">
+          <div class="glass-panel-elevated rounded-xl p-3.5">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-semibold text-slate-300 uppercase tracking-wider">Efficienza Tecnica</span>
+              <span id="coachScoreBadge" class="text-xl font-mono font-black text-cyan-400">7.5<span class="text-xs text-slate-400 font-normal">/10</span></span>
+            </div>
+            <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden mb-2">
+              <div id="coachScoreBar" class="bg-gradient-to-r from-cyan-500 to-emerald-400 h-full rounded-full transition-all duration-500" style="width: 75%"></div>
+            </div>
+            <p id="coachSummaryVerdict" class="text-xs text-slate-300 italic">
+              Buona continuità di bracciata. Da ottimizzare l'angolo di presa d'acqua (EVF) per ridurre lo slittamento dell'avambraccio.
+            </p>
+          </div>
+
+          <div class="space-y-2">
+            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Le 5 Fasi della Nuotata</h3>
+            <div class="space-y-1.5 text-xs">
+              <div class="phase-card p-2.5 rounded-lg bg-slate-900/80 border border-white/5 hover:border-cyan-500/30 transition-all cursor-pointer" data-phase-idx="0">
+                <div class="flex items-center justify-between font-semibold">
+                  <span class="text-slate-200">1. Ingresso & Scivolamento</span>
+                  <span class="text-emerald-400 text-[11px] font-mono">160°-175°</span>
+                </div>
+                <p class="text-[11px] text-slate-400 mt-0.5">Ingresso sulla linea della spalla senza incrociare.</p>
+              </div>
+
+              <div class="phase-card p-2.5 rounded-lg bg-cyan-950/40 border border-cyan-500/40 transition-all cursor-pointer shadow-sm" data-phase-idx="1">
+                <div class="flex items-center justify-between font-semibold">
+                  <span class="text-cyan-300 flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+                    2. Presa d'Acqua (EVF)
+                  </span>
+                  <span class="text-cyan-400 text-[11px] font-mono">100°-120°</span>
+                </div>
+                <p class="text-[11px] text-slate-300 mt-0.5">Avambraccio verticale a pala, gomito più alto del polso.</p>
+              </div>
+
+              <div class="phase-card p-2.5 rounded-lg bg-slate-900/80 border border-white/5 hover:border-cyan-500/30 transition-all cursor-pointer" data-phase-idx="2">
+                <div class="flex items-center justify-between font-semibold">
+                  <span class="text-slate-200">3. Trazione & Spinta</span>
+                  <span class="text-emerald-400 text-[11px] font-mono">90°-105°</span>
+                </div>
+                <p class="text-[11px] text-slate-400 mt-0.5">Accelerazione posteriore fino al tocco della coscia.</p>
+              </div>
+
+              <div class="phase-card p-2.5 rounded-lg bg-slate-900/80 border border-white/5 hover:border-cyan-500/30 transition-all cursor-pointer" data-phase-idx="3">
+                <div class="flex items-center justify-between font-semibold">
+                  <span class="text-slate-200">4. Recupero Aereo</span>
+                  <span class="text-emerald-400 text-[11px] font-mono">70°-90°</span>
+                </div>
+                <p class="text-[11px] text-slate-400 mt-0.5">Gomito alto decontratto, mano vicina al pelo dell'acqua.</p>
+              </div>
+
+              <div class="phase-card p-2.5 rounded-lg bg-slate-900/80 border border-white/5 hover:border-cyan-500/30 transition-all cursor-pointer" data-phase-idx="4">
+                <div class="flex items-center justify-between font-semibold">
+                  <span class="text-slate-200">5. Rollio & Gambata</span>
+                  <span class="text-emerald-400 text-[11px] font-mono">35°-45° Roll</span>
+                </div>
+                <p class="text-[11px] text-slate-400 mt-0.5">Rotazione intorno all'asse longitudinale, gambe compatte.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="dumbbell" class="w-3.5 h-3.5 text-cyan-400"></i>
+              Esercizi Correttivi Consigliati
+            </h3>
+            <div id="coachDrillsList" class="space-y-1.5 text-xs text-slate-300">
+              <!-- Populated dynamically -->
+            </div>
+          </div>
+
+          <div class="pt-2">
+            <button id="btnRunGeminiAnalysis" class="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-cyan-500 via-blue-600 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-slate-950 font-bold text-xs shadow-lg shadow-cyan-500/20 flex items-center justify-center gap-2 transition-all active:scale-[0.98]">
+              <i data-lucide="brain-circuit" class="w-4 h-4 text-slate-950"></i>
+              <span>Analisi Vision AI Completa (Gemini)</span>
+            </button>
+            <p class="text-[10px] text-slate-400 text-center mt-1.5">
+              Invia i fotogrammi sincronizzati all'AI per un'analisi biomeccanica dettagliata
+            </p>
+          </div>
+        </div>
+      </aside>
+
+    </div>
 
   </main>
 
   <!-- MODAL: AI COACH FULL DETAILED REPORT -->
   <div id="modalAiReport" class="fixed inset-0 z-50 modal-backdrop hidden flex items-center justify-center p-3 sm:p-6 animate-fade-in">
     <div class="bg-[#121c2d] border border-cyan-500/30 rounded-2xl w-full max-w-3xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
-      
-      <!-- Modal Header -->
       <div class="p-4 border-b border-white/10 flex items-center justify-between bg-slate-900/80">
         <div class="flex items-center gap-2">
           <div class="w-8 h-8 rounded-lg bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-cyan-400">
@@ -487,18 +663,12 @@
         </button>
       </div>
 
-      <!-- Modal Body (Markdown Rendered Content) -->
       <div id="aiReportContent" class="flex-1 overflow-y-auto p-5 text-sm text-slate-200 prose prose-invert max-w-none space-y-3">
-        <!-- Rendered markdown inserted here -->
-        <div class="flex flex-col items-center justify-center py-12 text-slate-400">
-          <div class="w-8 h-8 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin mb-3"></div>
-          <p class="text-xs font-mono">Elaborazione biomeccanica in corso con Google Gemini Vision...</p>
-        </div>
+        <!-- Markdown Rendered Content -->
       </div>
 
-      <!-- Modal Footer -->
       <div class="p-3 border-t border-white/10 bg-slate-900/80 flex items-center justify-between gap-3">
-        <span class="text-[11px] text-slate-400">Analisi generata tramite Gemini 2.5 Flash Multimodal</span>
+        <span class="text-[11px] text-slate-400">Generato con Google Gemini Flash</span>
         <div class="flex items-center gap-2">
           <button id="btnCopyReport" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 border border-white/10 flex items-center gap-1.5">
             <i data-lucide="copy" class="w-3.5 h-3.5"></i>
@@ -509,7 +679,6 @@
           </button>
         </div>
       </div>
-
     </div>
   </div>
 
@@ -528,20 +697,11 @@
 
       <div class="space-y-3 text-xs text-slate-300">
         <div>
-          <label class="block font-semibold mb-1 text-slate-200">Chiave API Google Gemini (Completamente Gratuita)</label>
+          <label class="block font-semibold mb-1 text-slate-200">Chiave API Google Gemini (Gratuita)</label>
           <input type="password" id="inputApiKey" placeholder="Incolla qui la tua API Key di Google AI Studio..." class="w-full bg-slate-900 border border-white/10 rounded-lg p-2.5 text-xs text-white outline-none focus:border-cyan-500 font-mono">
           <p class="text-[11px] text-slate-400 mt-1.5 leading-relaxed">
-            Per attivare l'analisi automatica con Vision AI: ottieni una chiave gratis in 1 minuto su <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-cyan-400 underline font-semibold">Google AI Studio</a>. La chiave rimane salvata solo sul tuo browser.
+            Per attivare l'analisi automatica con Vision AI: ottieni una chiave gratis in 1 minuto su <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-cyan-400 underline font-semibold">Google AI Studio</a>. La chiave rimane salvata solo sul tuo smartphone/browser.
           </p>
-        </div>
-
-        <div class="pt-2 border-t border-white/10">
-          <label class="block font-semibold mb-1 text-slate-200">Frequenza Fotogrammi Video</label>
-          <select id="selectFps" class="w-full bg-slate-900 border border-white/10 rounded-lg p-2 text-xs text-white outline-none">
-            <option value="30">30 FPS (Standard Smartphone)</option>
-            <option value="60">60 FPS (Slow Motion HD)</option>
-            <option value="120">120 FPS (Ultra Slow Motion)</option>
-          </select>
         </div>
       </div>
 
@@ -559,7 +719,7 @@
       <div class="flex items-center justify-between border-b border-white/10 pb-3">
         <h3 class="text-sm font-bold text-white flex items-center gap-2">
           <i data-lucide="video" class="w-4 h-4 text-cyan-400"></i>
-          Come filmare la nuotata con lo Smartphone
+          Guida Riprese Video da Smartphone
         </h3>
         <button id="btnCloseFilmingGuide" class="p-1 rounded text-slate-400 hover:text-white">
           <i data-lucide="x" class="w-4 h-4"></i>
@@ -568,23 +728,23 @@
 
       <div class="space-y-3 text-xs text-slate-300 leading-relaxed">
         <div class="p-3 rounded-lg bg-slate-900/80 border border-white/5">
-          <h4 class="font-bold text-cyan-400 mb-1">1. Angolazione Ideale (Laterale a Pelo d'Acqua)</h4>
-          <p>La migliore ripresa per analizzare l'Early Vertical Forearm (EVF) e la linea corporea si ottiene posizionando lo smartphone a bordo vasca all'altezza dell'acqua, perpendicolare alla corsia. Fai passare il nuotatore davanti alla fotocamera.</p>
+          <h4 class="font-bold text-cyan-400 mb-1">1. Angolazione Laterale (EVF & Assetto)</h4>
+          <p>Tieni il telefono a bordo vasca a 10-20 cm dalla superficie dell'acqua, perpendicolare alla corsia. Fai passare l'atleta per filmare 1-2 cicli completi.</p>
         </div>
 
         <div class="p-3 rounded-lg bg-slate-900/80 border border-white/5">
-          <h4 class="font-bold text-emerald-400 mb-1">2. Imposta 60 FPS o Slow-Motion</h4>
-          <p>Nelle impostazioni della fotocamera del tuo telefono, seleziona 1080p a 60 fps o modalità Rallentatore (120/240 fps). Questo azzera l'effetto sfocato causato dagli schizzi d'acqua e permette di analizzare il gomito fotogramma per fotogramma.</p>
+          <h4 class="font-bold text-emerald-400 mb-1">2. Angolazione Frontale (Crossover & Rollio)</h4>
+          <p>Mettiti a fine corsia e filma l'atleta mentre nuota verso di te: perfetto per individuare le braccia che incrociano la linea mediana della testa.</p>
         </div>
 
         <div class="p-3 rounded-lg bg-slate-900/80 border border-white/5">
-          <h4 class="font-bold text-amber-400 mb-1">3. Custodia Impermeabile o Ripresa Subacquea</h4>
-          <p>Se usi una custodia subacquea o un'action cam, immergila a 30-50 cm di profondità: la visione subacquea laterale azzera completamente la rifrazione della superficie e permette all'app e all'AI di tracciare la pala della mano al millimetro.</p>
+          <h4 class="font-bold text-amber-400 mb-1">3. Angolazione Posteriore (Gambe & Scodata)</h4>
+          <p>Filma l'atleta mentre si allontana dal bordo: essenziale per verificare se il bacino serpeggia o se le gambe si aprono troppo a forbice.</p>
         </div>
 
         <div class="p-3 rounded-lg bg-slate-900/80 border border-white/5">
-          <h4 class="font-bold text-purple-400 mb-1">4. Ripresa Frontale (per Crossover e Rollio)</h4>
-          <p>Fai nuotare il soggetto dritto verso la fotocamera per individuare se le mani incrociano la linea mediana della testa (crossover) o se il rollio delle spalle è asimmetrico.</p>
+          <h4 class="font-bold text-purple-400 mb-1">4. Imposta 60 FPS o Slow-Motion</h4>
+          <p>Nelle impostazioni della fotocamera dello smartphone, imposta 60 fps o modalità Rallentatore (120 fps) per azzerare la sfocatura causata dagli schizzi d'acqua.</p>
         </div>
       </div>
 
