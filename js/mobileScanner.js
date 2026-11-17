@@ -1107,22 +1107,44 @@ export function analyzeVideoBiomechanics({
   const waterDrills = [];
   const drylandDrills = [];
 
+  // Robust Deduplication Helper for Exercises
+  const isDuplicateDrill = (list, candidate) => {
+    const norm = (s) => (s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    const cKey = norm(candidate.name).substring(0, 8);
+    return list.some(existing => {
+      const eKey = norm(existing.name).substring(0, 8);
+      return eKey === cKey ||
+        (norm(existing.name).includes('scull') && norm(candidate.name).includes('scull')) ||
+        (norm(existing.name).includes('hollow') && norm(candidate.name).includes('hollow')) ||
+        (norm(existing.name).includes('elastici') && norm(candidate.name).includes('elastici')) ||
+        (norm(existing.name).includes('tavoletta') && norm(candidate.name).includes('tavoletta')) ||
+        (norm(existing.name).includes('occhialino') && norm(candidate.name).includes('occhialino'));
+    });
+  };
+
+  const addWaterDrill = (d) => {
+    if (!isDuplicateDrill(waterDrills, d)) waterDrills.push(d);
+  };
+  const addDrylandDrill = (d) => {
+    if (!isDuplicateDrill(drylandDrills, d)) drylandDrills.push(d);
+  };
+
   // 1. EVF EVALUATION
   if (evfAngle < 95) {
     score -= 2.2;
     macroFaults.push({
-      title: `Gomito Caduto nella Presa (Dropped Elbow - ${evfAngle}°)`,
+      title: `Gomito Caduto nella Presa (EVF Slip: ${evfAngle}°)`,
       severity: 'critical',
-      impact: `-35% di spinta propulsiva`,
-      detail: `Nel fotogramma di presa l'avambraccio non si verticalizza: l'angolo registrato è di ${evfAngle}° (target élite: 100°-120°). Il gomito scivola indietro per primo, facendo sfuggire la massa d'acqua prima della spinta.`
+      impact: `-35% spinta propulsiva`,
+      detail: `Nel fotogramma di presa l'avambraccio non si verticalizza: l'angolo registrato è di ${evfAngle}° (target élite: 100°-120°). Il gomito cede verso il corpo prima della mano, disperdendo la massa d'acqua propulsiva.`
     });
-    waterDrills.push({
-      name: 'Sculling a Presa Alta con Snorkel Frontale',
+    addWaterDrill({
+      name: 'Sculling a Presa Alta con Boccaglio Frontale',
       reps: '4 x 50m (rec. 25")',
       gear: 'Boccaglio frontale + Mezze palette',
-      goal: 'Isola la prima fase di presa d\'acqua obbligando il gomito a restare alto rispetto al polso.'
+      goal: 'Isola la prima fase di presa obbligando il gomito a restare alto rispetto al polso.'
     });
-    drylandDrills.push({
+    addDrylandDrill({
       name: 'Trazione EVF con Elastici a Parete',
       reps: '3 x 15 ripetizioni lente',
       gear: 'Elastici da nuoto con palette',
@@ -1131,18 +1153,18 @@ export function analyzeVideoBiomechanics({
   } else if (evfAngle > 132) {
     score -= 1.6;
     macroFaults.push({
-      title: `Trazione a Braccio Eccessivamente Disteso (${evfAngle}°)`,
+      title: `Trazione a Braccio Troppo Disteso (${evfAngle}°)`,
       severity: 'high',
-      impact: `Sovraccarico alla cuffia dei rotatori`,
-      detail: `L'angolo del gomito misurato è di ${evfAngle}°. La passata subacquea è condotta a braccio troppo lungo e rigido, disperdendo energia muscolare e ritardando l'accelerazione finale.`
+      impact: `Sovraccarico articolare spalla`,
+      detail: `L'angolo del gomito misurato è di ${evfAngle}°. La passata subacquea è a braccio troppo rigido, allungando la leva a sfavore della cuffia dei rotatori e ritardando l'accelerazione finale.`
     });
-    waterDrills.push({
+    addWaterDrill({
       name: 'Nuotata "Catch-Up" con Pull-Buoy e Flessione Forzata',
       reps: '6 x 50m',
       gear: 'Pull-buoy',
       goal: 'Flettere il gomito a 110° a metà passata prima di accelerare la mano verso la coscia.'
     });
-    drylandDrills.push({
+    addDrylandDrill({
       name: 'Pull-over con Manubrio su Panca',
       reps: '3 x 12',
       gear: 'Manubrio da 6-10kg',
@@ -1158,28 +1180,29 @@ export function analyzeVideoBiomechanics({
   // 2. BODY PITCH EVALUATION
   if (avgPitch < -7.5) {
     score -= 2.0;
+    const causeNote = headLifted ? ' (accentuato dal sollevamento del capo)' : '';
     macroFaults.push({
-      title: `Assetto Frenante: Gambe e Bacino Affondati (${avgPitch}°)`,
+      title: `Assetto Frenante: Gambe e Bacino Affondati (${avgPitch}°)${causeNote}`,
       severity: 'high',
       impact: `+${Math.round(Math.abs(avgPitch) * 2.3)}% resistenza d'attrito`,
-      detail: `L'asse corporeo evidenzia un'inclinazione verso il basso di ${avgPitch}° rispetto al piano dell'acqua (il target idrodinamico è tra -2° e -4°). Le gambe scendono troppo in profondità e agiscono come un freno idraulico.`
+      detail: `L'asse corporeo evidenzia un'inclinazione verso il basso di ${avgPitch}° rispetto al piano dell'acqua (target: tra -2° e -4°). Le gambe scendono troppo in profondità creando turbolenze frenanti.`
     });
-    waterDrills.push({
+    addWaterDrill({
       name: 'Battuta di Gambe con Tavoletta Piatta & Snorkel',
       reps: '4 x 50m',
-      gear: 'Snorkel + Tavoletta tenuta orizzontale a filo d\'acqua',
-      goal: 'Spingere il torace in basso per sollevare la linea di galleggiamento di anche e talloni.'
+      gear: 'Snorkel + Tavoletta tenuta orizzontale a pelo d\'acqua',
+      goal: 'Premere con il torace in basso per sollevare la linea di galleggiamento di anche e talloni.'
     });
-    drylandDrills.push({
+    addDrylandDrill({
       name: 'Hollow Body Hold (Barchetta a Terra)',
       reps: '4 x 30 secondi',
       gear: 'A corpo libero su tappetino',
-      focus: 'Attivazione del trasverso dell\'addome e retroversione del bacino per annullare l\'inclinazione.'
+      focus: 'Attivazione del trasverso addominale e retroversione del bacino per annullare l\'inclinazione.'
     });
   } else if (avgPitch >= -4.5 && avgPitch <= 1.5) {
     strengths.push({
       title: `Assetto a Siluro Orizzontale (${avgPitch}°)`,
-      detail: `Linee del corpo perfettamente idrodinamiche lungo la linea di galleggiamento. Minima resistenza di forma.`
+      detail: `Linee del corpo perfettamente idrodinamiche lungo la linea di galleggiamento. Minima resistenza frontale.`
     });
   } else {
     microFaults.push({
@@ -1188,20 +1211,20 @@ export function analyzeVideoBiomechanics({
     });
   }
 
-  // 3. HEAD & BREATHING EVALUATION
-  if (headLifted) {
+  // 3. HEAD & BREATHING EVALUATION (avoid duplicate if pitch already explains it)
+  if (headLifted && avgPitch >= -7.5) {
     score -= 0.8;
     microFaults.push({
       title: `Iperestensione del Capo nella Respirazione`,
-      detail: `Durante la fase respiratoria il capo si solleva frontalmente anziché ruotare adagiandosi sulla scia della spalla, provocando l'affondamento del bacino.`
+      detail: `Durante la fase respiratoria il capo si solleva frontalmente anziché ruotare adagiandosi sulla scia della spalla.`
     });
-    waterDrills.push({
+    addWaterDrill({
       name: 'Stile con un Occhialino Permanente in Acqua',
       reps: '4 x 50m',
       gear: 'Senza attrezzi',
       goal: 'Mantenere sempre un occhialino immerso durante ogni respirazione laterale.'
     });
-  } else {
+  } else if (!headLifted) {
     strengths.push({
       title: `Assetto del Capo Corretto`,
       detail: `La testa rimane adagiata sulla linea d'avanzamento, proteggendo l'allineamento della colonna vertebrale.`
@@ -1227,33 +1250,16 @@ export function analyzeVideoBiomechanics({
     });
   }
 
-  // Fallback if no critical macro faults
-  if (macroFaults.length === 0) {
-    macroFaults.push({
-      title: `Esecuzione Biomeccanica di Alto Livello (Nessun Macro-Errore)`,
-      severity: 'success',
-      impact: `Massima efficienza idrodinamica`,
-      detail: `L'atleta dimostra un assetto corporeo compatto (${avgPitch}°) e una presa a gomito alto efficace (${evfAngle}°). Il piano di lavoro deve concentrarsi sul mantenimento della sensibilità e sulle micro-rifiniture di rollio.`
-    });
-    if (waterDrills.length === 0) {
-      waterDrills.push({
-        name: 'Nuotata Tecnica a Pugni Chiusi + Palette',
-        reps: '6 x 50m (25m pugno / 25m normale)',
-        gear: 'Mezze palette',
-        goal: 'Aumentare la sensibilità propulsiva dell\'avambraccio mantenendo la precisione del gesto.'
-      });
-    }
-  }
-
+  // Fallback catalogue drills if fewer than 2 exist
   if (waterDrills.length < 2 && diag.waterDrills) {
     for (const d of diag.waterDrills) {
-      if (!waterDrills.some(wd => wd.name === d.name)) waterDrills.push(d);
+      addWaterDrill(d);
       if (waterDrills.length >= 2) break;
     }
   }
   if (drylandDrills.length < 2 && diag.drylandDrills) {
     for (const d of diag.drylandDrills) {
-      if (!drylandDrills.some(dd => dd.name === d.name)) drylandDrills.push(d);
+      addDrylandDrill(d);
       if (drylandDrills.length >= 2) break;
     }
   }

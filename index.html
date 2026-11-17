@@ -783,6 +783,64 @@
     </div>
   </div>
 
+  <!-- MODAL: KEYFRAME ZOOM LIGHTBOX (HIGH-RES BIOMECHANICAL VIEWER) -->
+  <div id="modalKeyframeZoom" class="fixed inset-0 z-50 modal-backdrop hidden flex items-center justify-center p-2 sm:p-4 animate-fade-in">
+    <div class="bg-[#0e1726] border border-cyan-500/40 rounded-2xl w-full max-w-4xl max-h-[95vh] flex flex-col shadow-2xl overflow-hidden relative">
+      <!-- Header -->
+      <div class="px-4 py-3 bg-[#121c2d] border-b border-white/10 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse"></span>
+          <h3 id="zoomFrameTitle" class="text-sm font-bold text-white flex items-center gap-2">
+            Fotogramma Ingrandito
+          </h3>
+          <span id="zoomFrameTime" class="text-xs font-mono text-cyan-400 bg-cyan-950/60 px-2 py-0.5 rounded border border-cyan-500/20">0.0s</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <button id="btnZoomPrev" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-white/10 flex items-center gap-1 text-xs transition-colors" title="Fotogramma precedente (Freccia Sinistra)">
+            <i data-lucide="chevron-left" class="w-4 h-4"></i>
+            <span class="hidden sm:inline">Prec</span>
+          </button>
+          <button id="btnZoomNext" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-white/10 flex items-center gap-1 text-xs transition-colors" title="Fotogramma successivo (Freccia Destra)">
+            <span class="hidden sm:inline">Succ</span>
+            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+          </button>
+          <button id="btnCloseZoom" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 ml-2" title="Chiudi (ESC)">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Image Container -->
+      <div class="flex-1 bg-black flex items-center justify-center p-2 sm:p-4 overflow-hidden relative select-none">
+        <img id="zoomFrameImage" src="" alt="Fotogramma Biomeccanico Ingrandito" class="max-h-[68vh] w-auto max-w-full object-contain rounded-xl shadow-2xl border border-white/10 transition-all">
+        
+        <!-- Navigation Arrows Overlay -->
+        <button id="btnOverlayPrev" class="absolute left-3 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-black/60 hover:bg-cyan-500 hover:text-slate-950 text-white border border-white/20 transition-all opacity-75 hover:opacity-100" title="Precedente">
+          <i data-lucide="chevron-left" class="w-6 h-6"></i>
+        </button>
+        <button id="btnOverlayNext" class="absolute right-3 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-black/60 hover:bg-cyan-500 hover:text-slate-950 text-white border border-white/20 transition-all opacity-75 hover:opacity-100" title="Successivo">
+          <i data-lucide="chevron-right" class="w-6 h-6"></i>
+        </button>
+      </div>
+
+      <!-- Footer / Detailed Biomechanical Breakdown -->
+      <div class="p-3 bg-[#121c2d] border-t border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs">
+        <div class="space-y-0.5">
+          <div class="flex items-center gap-2">
+            <span id="zoomPhaseBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full badge-cyan">Fase 1/4</span>
+            <span id="zoomMetricsBadge" class="font-mono text-xs text-cyan-300">EVF: -- | Pitch: --</span>
+          </div>
+          <p id="zoomFrameDescription" class="text-[11px] text-slate-300">
+            Dettagli della fase biomeccanica con tracciamento scheletro neon e misurazioni angolari.
+          </p>
+        </div>
+        <div class="flex items-center gap-2 shrink-0">
+          <span class="text-[10px] text-slate-400">Tocca i lati o premi le frecce per scorrere</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- SCRIPTS -->
   <script src="js/app.bundle.js"></script>
 </body>

@@ -1245,22 +1245,44 @@
     const waterDrills = [];
     const drylandDrills = [];
 
+    // Robust Deduplication Helper for Exercises
+    const isDuplicateDrill = (list, candidate) => {
+      const norm = (s) => (s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+      const cKey = norm(candidate.name).substring(0, 8);
+      return list.some(existing => {
+        const eKey = norm(existing.name).substring(0, 8);
+        return eKey === cKey ||
+          (norm(existing.name).includes('scull') && norm(candidate.name).includes('scull')) ||
+          (norm(existing.name).includes('hollow') && norm(candidate.name).includes('hollow')) ||
+          (norm(existing.name).includes('elastici') && norm(candidate.name).includes('elastici')) ||
+          (norm(existing.name).includes('tavoletta') && norm(candidate.name).includes('tavoletta')) ||
+          (norm(existing.name).includes('occhialino') && norm(candidate.name).includes('occhialino'));
+      });
+    };
+
+    const addWaterDrill = (d) => {
+      if (!isDuplicateDrill(waterDrills, d)) waterDrills.push(d);
+    };
+    const addDrylandDrill = (d) => {
+      if (!isDuplicateDrill(drylandDrills, d)) drylandDrills.push(d);
+    };
+
     // 1. EVF EVALUATION
     if (evfAngle < 95) {
       score -= 2.2;
       macroFaults.push({
-        title: `Gomito Caduto nella Presa (Dropped Elbow - ${evfAngle}°)`,
+        title: `Gomito Caduto nella Presa (EVF Slip: ${evfAngle}°)`,
         severity: 'critical',
-        impact: `-35% di spinta propulsiva`,
-        detail: `Nel fotogramma di presa l'avambraccio non si verticalizza: l'angolo registrato è di ${evfAngle}° (target élite: 100°-120°). Il gomito scivola indietro per primo, facendo sfuggire la massa d'acqua prima della spinta.`
+        impact: `-35% spinta propulsiva`,
+        detail: `Nel fotogramma di presa l'avambraccio non si verticalizza: l'angolo registrato è di ${evfAngle}° (target élite: 100°-120°). Il gomito cede verso il corpo prima della mano, disperdendo la massa d'acqua propulsiva.`
       });
-      waterDrills.push({
-        name: 'Sculling a Presa Alta con Snorkel Frontale',
+      addWaterDrill({
+        name: 'Sculling a Presa Alta con Boccaglio Frontale',
         reps: '4 x 50m (rec. 25")',
         gear: 'Boccaglio frontale + Mezze palette',
-        goal: 'Isola la prima fase di presa d\'acqua obbligando il gomito a restare alto rispetto al polso.'
+        goal: 'Isola la prima fase di presa obbligando il gomito a restare alto rispetto al polso.'
       });
-      drylandDrills.push({
+      addDrylandDrill({
         name: 'Trazione EVF con Elastici a Parete',
         reps: '3 x 15 ripetizioni lente',
         gear: 'Elastici da nuoto con palette',
@@ -1269,18 +1291,18 @@
     } else if (evfAngle > 132) {
       score -= 1.6;
       macroFaults.push({
-        title: `Trazione a Braccio Eccessivamente Disteso (${evfAngle}°)`,
+        title: `Trazione a Braccio Troppo Disteso (${evfAngle}°)`,
         severity: 'high',
-        impact: `Sovraccarico alla cuffia dei rotatori`,
-        detail: `L'angolo del gomito misurato è di ${evfAngle}°. La passata subacquea è condotta a braccio troppo lungo e rigido, disperdendo energia muscolare e ritardando l'accelerazione finale.`
+        impact: `Sovraccarico articolare spalla`,
+        detail: `L'angolo del gomito misurato è di ${evfAngle}°. La passata subacquea è a braccio troppo rigido, allungando la leva a sfavore della cuffia dei rotatori e ritardando l'accelerazione finale.`
       });
-      waterDrills.push({
+      addWaterDrill({
         name: 'Nuotata "Catch-Up" con Pull-Buoy e Flessione Forzata',
         reps: '6 x 50m',
         gear: 'Pull-buoy',
         goal: 'Flettere il gomito a 110° a metà passata prima di accelerare la mano verso la coscia.'
       });
-      drylandDrills.push({
+      addDrylandDrill({
         name: 'Pull-over con Manubrio su Panca',
         reps: '3 x 12',
         gear: 'Manubrio da 6-10kg',
@@ -1296,28 +1318,29 @@
     // 2. BODY PITCH EVALUATION
     if (avgPitch < -7.5) {
       score -= 2.0;
+      const causeNote = headLifted ? ' (accentuato dal sollevamento del capo)' : '';
       macroFaults.push({
-        title: `Assetto Frenante: Gambe e Bacino Affondati (${avgPitch}°)`,
+        title: `Assetto Frenante: Gambe e Bacino Affondati (${avgPitch}°)${causeNote}`,
         severity: 'high',
         impact: `+${Math.round(Math.abs(avgPitch) * 2.3)}% resistenza d'attrito`,
-        detail: `L'asse corporeo evidenzia un'inclinazione verso il basso di ${avgPitch}° rispetto al piano dell'acqua (il target idrodinamico è tra -2° e -4°). Le gambe scendono troppo in profondità e agiscono come un freno idraulico.`
+        detail: `L'asse corporeo evidenzia un'inclinazione verso il basso di ${avgPitch}° rispetto al piano dell'acqua (target: tra -2° e -4°). Le gambe scendono troppo in profondità creando turbolenze frenanti.`
       });
-      waterDrills.push({
+      addWaterDrill({
         name: 'Battuta di Gambe con Tavoletta Piatta & Snorkel',
         reps: '4 x 50m',
-        gear: 'Snorkel + Tavoletta tenuta orizzontale a filo d\'acqua',
-        goal: 'Spingere il torace in basso per sollevare la linea di galleggiamento di anche e talloni.'
+        gear: 'Snorkel + Tavoletta tenuta orizzontale a pelo d\'acqua',
+        goal: 'Premere con il torace in basso per sollevare la linea di galleggiamento di anche e talloni.'
       });
-      drylandDrills.push({
+      addDrylandDrill({
         name: 'Hollow Body Hold (Barchetta a Terra)',
         reps: '4 x 30 secondi',
         gear: 'A corpo libero su tappetino',
-        focus: 'Attivazione del trasverso dell\'addome e retroversione del bacino per annullare l\'inclinazione.'
+        focus: 'Attivazione del trasverso addominale e retroversione del bacino per annullare l\'inclinazione.'
       });
     } else if (avgPitch >= -4.5 && avgPitch <= 1.5) {
       strengths.push({
         title: `Assetto a Siluro Orizzontale (${avgPitch}°)`,
-        detail: `Linee del corpo perfettamente idrodinamiche lungo la linea di galleggiamento. Minima resistenza di forma.`
+        detail: `Linee del corpo perfettamente idrodinamiche lungo la linea di galleggiamento. Minima resistenza frontale.`
       });
     } else {
       microFaults.push({
@@ -1326,20 +1349,20 @@
       });
     }
 
-    // 3. HEAD & BREATHING EVALUATION
-    if (headLifted) {
+    // 3. HEAD & BREATHING EVALUATION (avoid duplicate if pitch already explains it)
+    if (headLifted && avgPitch >= -7.5) {
       score -= 0.8;
       microFaults.push({
         title: `Iperestensione del Capo nella Respirazione`,
-        detail: `Durante la fase respiratoria il capo si solleva frontalmente anziché ruotare adagiandosi sulla scia della spalla, provocando l'affondamento del bacino.`
+        detail: `Durante la fase respiratoria il capo si solleva frontalmente anziché ruotare adagiandosi sulla scia della spalla.`
       });
-      waterDrills.push({
+      addWaterDrill({
         name: 'Stile con un Occhialino Permanente in Acqua',
         reps: '4 x 50m',
         gear: 'Senza attrezzi',
         goal: 'Mantenere sempre un occhialino immerso durante ogni respirazione laterale.'
       });
-    } else {
+    } else if (!headLifted) {
       strengths.push({
         title: `Assetto del Capo Corretto`,
         detail: `La testa rimane adagiata sulla linea d'avanzamento, proteggendo l'allineamento della colonna vertebrale.`
@@ -1365,32 +1388,16 @@
       });
     }
 
-    if (macroFaults.length === 0) {
-      macroFaults.push({
-        title: `Esecuzione Biomeccanica di Alto Livello (Nessun Macro-Errore)`,
-        severity: 'success',
-        impact: `Massima efficienza idrodinamica`,
-        detail: `L'atleta dimostra un assetto corporeo compatto (${avgPitch}°) e una presa a gomito alto efficace (${evfAngle}°). Il piano di lavoro deve concentrarsi sul mantenimento della sensibilità e sulle micro-rifiniture di rollio.`
-      });
-      if (waterDrills.length === 0) {
-        waterDrills.push({
-          name: 'Nuotata Tecnica a Pugni Chiusi + Palette',
-          reps: '6 x 50m (25m pugno / 25m normale)',
-          gear: 'Mezze palette',
-          goal: 'Aumentare la sensibilità propulsiva dell\'avambraccio mantenendo la precisione del gesto.'
-        });
-      }
-    }
-
+    // Fallback catalogue drills if fewer than 2 exist
     if (waterDrills.length < 2 && diag.waterDrills) {
       for (const d of diag.waterDrills) {
-        if (!waterDrills.some(wd => wd.name === d.name)) waterDrills.push(d);
+        addWaterDrill(d);
         if (waterDrills.length >= 2) break;
       }
     }
     if (drylandDrills.length < 2 && diag.drylandDrills) {
       for (const d of diag.drylandDrills) {
-        if (!drylandDrills.some(dd => dd.name === d.name)) drylandDrills.push(d);
+        addDrylandDrill(d);
         if (drylandDrills.length >= 2) break;
       }
     }
@@ -2509,6 +2516,91 @@ Fornisci una perizia tecnica comparativa e costruttiva per questo atleta, commen
           }
         });
       }
+
+      // Keyframe Zoom Lightbox Listeners
+      this.currentZoomIndex = 0;
+      const modalZoom = document.getElementById('modalKeyframeZoom');
+      const btnCloseZoom = document.getElementById('btnCloseZoom');
+      if (btnCloseZoom) {
+        btnCloseZoom.addEventListener('click', () => this.closeKeyframeZoom());
+      }
+
+      const btnZoomPrev = document.getElementById('btnZoomPrev');
+      if (btnZoomPrev) btnZoomPrev.addEventListener('click', () => this.navigateZoom(-1));
+      const btnOverlayPrev = document.getElementById('btnOverlayPrev');
+      if (btnOverlayPrev) btnOverlayPrev.addEventListener('click', () => this.navigateZoom(-1));
+
+      const btnZoomNext = document.getElementById('btnZoomNext');
+      if (btnZoomNext) btnZoomNext.addEventListener('click', () => this.navigateZoom(1));
+      const btnOverlayNext = document.getElementById('btnOverlayNext');
+      if (btnOverlayNext) btnOverlayNext.addEventListener('click', () => this.navigateZoom(1));
+
+      if (modalZoom) {
+        modalZoom.addEventListener('click', (e) => {
+          if (e.target === modalZoom) this.closeKeyframeZoom();
+        });
+      }
+
+      window.addEventListener('keydown', (e) => {
+        if (modalZoom && !modalZoom.classList.contains('hidden')) {
+          if (e.key === 'Escape') this.closeKeyframeZoom();
+          if (e.key === 'ArrowLeft') this.navigateZoom(-1);
+          if (e.key === 'ArrowRight') this.navigateZoom(1);
+        }
+      });
+    }
+
+    openKeyframeZoom(index) {
+      if (!this.currentMobileReport || !this.currentMobileReport.keyframes) return;
+      const keyframes = this.currentMobileReport.keyframes;
+      if (index < 0 || index >= keyframes.length) return;
+
+      this.currentZoomIndex = index;
+      const kf = keyframes[index];
+
+      const modal = document.getElementById('modalKeyframeZoom');
+      const img = document.getElementById('zoomFrameImage');
+      const title = document.getElementById('zoomFrameTitle');
+      const time = document.getElementById('zoomFrameTime');
+      const phaseBadge = document.getElementById('zoomPhaseBadge');
+      const metricsBadge = document.getElementById('zoomMetricsBadge');
+      const desc = document.getElementById('zoomFrameDescription');
+
+      if (img && kf.dataUrl) img.src = kf.dataUrl;
+      if (title) title.textContent = kf.label || `Fotogramma ${index + 1}`;
+      if (time) time.textContent = kf.time || '';
+      if (phaseBadge) phaseBadge.textContent = `Fase ${index + 1}/4`;
+
+      const descriptions = [
+        'Fase 1: Ingresso e Scivolamento. La mano deve entrare distesa lungo la linea della spalla ("binari del treno"). L\'asse corporeo deve formare una linea idrodinamica a siluro a pelo d\'acqua (pitch compreso tra -2° e -4°).',
+        'Fase 2: Presa d\'Acqua (Catch / EVF). Momento cardine della nuotata: l\'avambraccio si verticalizza creando una pala d\'acqua efficace, mentre il gomito deve restare stabilmente più alto rispetto al polso.',
+        'Fase 3: Trazione e Spinta (Pull & Push). Massima accelerazione propulsiva: la mano spinge indietro sotto la cassa toracica completando l\'estensione del tricipite fino al contatto del pollice con la coscia.',
+        'Fase 4: Recupero e Respirazione. Braccio decontratto e flesso durante la fase aerea. Il capo ruota senza sollevarsi frontalmente, mantenendo un occhialino immerso per non far affondare il bacino.'
+      ];
+
+      if (desc) desc.textContent = descriptions[index] || 'Analisi dettagliata del fotogramma biomeccanico.';
+
+      if (metricsBadge) {
+        const evf = kf.evfAngle ? `EVF: ${kf.evfAngle}°` : '';
+        const pitch = kf.pitchAngle !== undefined ? `Pitch: ${kf.pitchAngle > 0 ? '+' : ''}${kf.pitchAngle}°` : '';
+        metricsBadge.textContent = [evf, pitch].filter(Boolean).join(' | ');
+      }
+
+      modal.classList.remove('hidden');
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    navigateZoom(direction) {
+      if (!this.currentMobileReport || !this.currentMobileReport.keyframes) return;
+      const total = this.currentMobileReport.keyframes.length;
+      let nextIndex = (this.currentZoomIndex + direction) % total;
+      if (nextIndex < 0) nextIndex += total;
+      this.openKeyframeZoom(nextIndex);
+    }
+
+    closeKeyframeZoom() {
+      const modal = document.getElementById('modalKeyframeZoom');
+      if (modal) modal.classList.add('hidden');
     }
 
     async runMobileScan(videoSource) {
@@ -2579,9 +2671,11 @@ Fornisci una perizia tecnica comparativa e costruttiva per questo atleta, commen
       document.getElementById('reportPerspBadge').textContent = report.perspectiveName;
       document.getElementById('reportScoreNum').textContent = report.score;
 
-      // Verdict
-      const mainFault = report.macroFaults[0]?.title || 'Buona continuità di bracciata.';
-      document.getElementById('reportVerdictText').textContent = `Discrepanza principale: ${mainFault}. Suggerito lavoro specifico sui difetti rilevati.`;
+      // Verdict - Concise non-duplicate summary
+      const mainFault = (report.macroFaults && report.macroFaults.length > 0) ? report.macroFaults[0].title : null;
+      document.getElementById('reportVerdictText').textContent = mainFault
+        ? `Priorità d'intervento: ${mainFault}. Assegnati protocolli mirati per assetto e pala d'acqua.`
+        : `Nuotata fluida ed idrodinamica: nessun difetto critico macroscopico riscontrato, focus su ritmo e continuità.`;
 
       // Real Biomechanical Metrics Dashboard
       const metricsGrid = document.getElementById('mobileMetricsGrid');
@@ -2617,21 +2711,38 @@ Fornisci una perizia tecnica comparativa e costruttiva per questo atleta, commen
         `;
       }
 
-      // Filmstrip of 4 Extracted Keyframes
+      // Filmstrip of 4 Extracted Keyframes (Click to Zoom in high-res Lightbox)
       const filmstrip = document.getElementById('mobileFilmstrip');
-      filmstrip.innerHTML = report.keyframes.map((kf) => `
-        <div class="filmstrip-item bg-slate-900/90 rounded-xl p-1.5 border border-white/10 flex flex-col shadow-sm">
+      filmstrip.innerHTML = report.keyframes.map((kf, idx) => `
+        <div class="filmstrip-item bg-slate-900/90 hover:bg-slate-800 rounded-xl p-1.5 border border-white/10 hover:border-cyan-400 flex flex-col shadow-sm cursor-pointer transition-all active:scale-95 group" data-frame-index="${idx}" title="Tocca per ingrandire e vedere le linee di correzione">
           <div class="h-24 bg-slate-950 rounded-lg overflow-hidden flex items-center justify-center relative">
             ${kf.dataUrl ? `<img src="${kf.dataUrl}" class="w-full h-full object-cover">` : `<span class="text-[10px] text-slate-500">Fotogramma</span>`}
             <span class="absolute bottom-1 right-1 bg-black/80 px-1 py-0.5 rounded text-[9px] font-mono text-cyan-400">${kf.time}</span>
             ${kf.isPoseAI ? `<span class="absolute top-1 left-1 bg-emerald-500/90 text-slate-950 px-1 py-0.2 rounded text-[8px] font-bold">POSE AI</span>` : ''}
+            <div class="absolute inset-0 bg-cyan-950/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+              <span class="p-1.5 rounded-full bg-cyan-500 text-slate-950 shadow-lg">
+                <i data-lucide="zoom-in" class="w-4 h-4"></i>
+              </span>
+            </div>
           </div>
-          <span class="text-[10px] font-semibold text-slate-200 mt-1 truncate">${kf.label}</span>
+          <div class="flex items-center justify-between mt-1 px-0.5">
+            <span class="text-[10px] font-semibold text-slate-200 truncate">${kf.label}</span>
+            <span class="text-[9px] text-cyan-400 font-mono font-medium flex items-center gap-0.5">🔍 Zoom</span>
+          </div>
         </div>
       `).join('');
 
-      // Faults and Strengths List
+      // Attach click-to-zoom on each filmstrip card
+      filmstrip.querySelectorAll('.filmstrip-item').forEach(item => {
+        item.addEventListener('click', () => {
+          const idx = parseInt(item.getAttribute('data-frame-index'), 10);
+          this.openKeyframeZoom(idx);
+        });
+      });
+
+      // Faults and Strengths List (Deduplicated)
       const faultsList = document.getElementById('mobileFaultsList');
+      const hasMacro = report.macroFaults && report.macroFaults.length > 0;
       faultsList.innerHTML = `
         ${report.strengths && report.strengths.length > 0 ? `
           <div class="p-2.5 rounded-xl bg-emerald-950/30 border border-emerald-500/40 space-y-1">
@@ -2647,20 +2758,25 @@ Fornisci una perizia tecnica comparativa e costruttiva per questo atleta, commen
           </div>
         ` : ''}
 
-        ${report.macroFaults.map((f, i) => `
-          <div class="p-2.5 rounded-xl ${f.severity === 'success' ? 'bg-emerald-950/30 border border-emerald-500/40' : 'bg-rose-950/30 border border-rose-500/40'} space-y-1">
+        ${hasMacro ? report.macroFaults.map((f, i) => `
+          <div class="p-2.5 rounded-xl bg-rose-950/30 border border-rose-500/40 space-y-1">
             <div class="flex items-center justify-between">
-              <span class="font-bold ${f.severity === 'success' ? 'text-emerald-300' : 'text-rose-300'} flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full ${f.severity === 'success' ? 'bg-emerald-400' : 'bg-rose-400'}"></span>
-                ${f.severity === 'success' ? 'PARAMETRO ÉLITE' : `MACRO ${i + 1}`}: ${f.title}
+              <span class="font-bold text-rose-300 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-rose-400"></span>
+                MACRO ${i + 1}: ${f.title}
               </span>
-              ${f.impact ? `<span class="text-[10px] font-mono ${f.severity === 'success' ? 'text-emerald-400 bg-emerald-950/60 border-emerald-500/20' : 'text-rose-400 bg-rose-950/60 border-rose-500/20'} px-1.5 py-0.5 rounded border">${f.impact}</span>` : ''}
+              ${f.impact ? `<span class="text-[10px] font-mono text-rose-400 bg-rose-950/60 border-rose-500/20 px-1.5 py-0.5 rounded border">${f.impact}</span>` : ''}
             </div>
             <p class="text-[11px] text-slate-300 leading-relaxed">${f.detail}</p>
           </div>
-        `).join('')}
+        `).join('') : `
+          <div class="p-2.5 rounded-xl bg-emerald-950/20 border border-emerald-500/30 text-emerald-300 text-xs flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            <span>Nessun macro-errore critico riscontrato sui parametri principali di presa e assetto.</span>
+          </div>
+        `}
 
-        ${report.microFaults.map((f) => `
+        ${report.microFaults && report.microFaults.length > 0 ? report.microFaults.map((f) => `
           <div class="p-2 rounded-xl bg-amber-950/20 border border-amber-500/30 flex items-start gap-2">
             <span class="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0 mt-1.5"></span>
             <div>
@@ -2668,10 +2784,10 @@ Fornisci una perizia tecnica comparativa e costruttiva per questo atleta, commen
               <p class="text-[10px] text-slate-300 mt-0.5">${f.detail}</p>
             </div>
           </div>
-        `).join('')}
+        `).join('') : ''}
       `;
 
-      // In-water Drills List
+      // In-water Drills List (Deduplicated)
       const waterList = document.getElementById('mobileWaterDrillsList');
       waterList.innerHTML = report.waterDrills.map((d, i) => `
         <div class="p-3 rounded-xl bg-cyan-950/30 border border-cyan-500/30 space-y-1.5">
@@ -2690,7 +2806,7 @@ Fornisci una perizia tecnica comparativa e costruttiva per questo atleta, commen
         </div>
       `).join('');
 
-      // Dryland Drills List
+      // Dryland Drills List (Deduplicated)
       const dryList = document.getElementById('mobileDrylandDrillsList');
       dryList.innerHTML = report.drylandDrills.map((d, i) => `
         <div class="p-3 rounded-xl bg-emerald-950/30 border border-emerald-500/30 space-y-1.5">
